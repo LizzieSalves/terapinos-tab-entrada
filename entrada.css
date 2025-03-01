@@ -1,34 +1,47 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-*{
+* {
     padding: 0;
     margin: 0;
     border: 0;
     font-family: "Poppins", serif;
-}     
 
+}
+
+#main-container {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    margin-left: 50px;
+    justify-items: center !important;
+
+
+}
 
 #principal{
-    margin: 0px 60px 0px 100px;
+    margin: 0px;
+    width: 90%;
 }
 
-/* * ------------------ Responsividade geral ---------------- */
+
+/*^ ------------------ Responsividade geral ---------------- */
+
 @media (max-width: 768px) {
-    #principal{
-        margin: 0px 30px 0px 30px;
+
+    #main-container {
+        margin-left: 0px;
     }
+
 }
 
 
+/* ^ ------------ Estilização do topo -------------- */
 
-/** ------------ Estilização do topo -------------- */
-
-#tab_topo{
+#tab_topo {
     padding-top: 100px;
     justify-items: center;
 }
 
-#tab_topo hr{
+#tab_topo hr {
     background-color: #EDAD66;
     width: auto;
     height: 3px;
@@ -36,21 +49,21 @@
 }
 
 /* Ações é a div que contem o botão novo e o filtro */
-#acoes{
+#acoes {
     display: flex;
     gap: 100px;
     padding-top: 20px;
     padding-bottom: 40px;
-  
+    
 }
 
-.btn{
+.btn {
     background-color: #EDAD66;
     color: #FFFFFF;
     padding: 10px 30px 10px 30px;
 }
 
-#btn-filtro{
+#btn-filtro {
     width: 50px;
     height: 50px;
     justify-content: center;
@@ -58,13 +71,26 @@
 }
 
 
-.bi-filter{
+.bi-filter {
     font-size: 50px;
 }
 
-/* *--------------- Tabela ---------------- */
-.table{
+/*^ --------------- Tabela ---------------- */
+.table {
     border-color: #006078;
-    
+
 }
 
+#tabela-container{
+    padding: 0px;
+}
+
+@media (max-width: 768px) {
+    #tabela-container {
+        overflow-x: auto;
+        /* ou "scroll" */
+        white-space: nowrap;
+        /* Impede que o conteúdo quebre em várias linhas */
+
+    }
+}
