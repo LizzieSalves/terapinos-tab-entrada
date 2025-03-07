@@ -76,14 +76,25 @@
 }
 
 /*^ --------------- Tabela ---------------- */
-.table {
+/* .table {
     border-color: #006078;
 
+} */
+
+/* .tabela-head{
+    background-color: #006078 !important;
+} */
+
+thead{
+    background-color: #006078 !important;
+    color: #FFFFFF;
 }
 
 #tabela-container{
     padding: 0px;
 }
+
+
 
 @media (max-width: 768px) {
     #tabela-container {
