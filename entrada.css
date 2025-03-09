@@ -17,7 +17,7 @@
 
 }
 
-#principal{
+#principal {
     margin: 0px;
     width: 90%;
 }
@@ -53,7 +53,7 @@
     display: flex;
     padding-top: 20px;
     padding-bottom: 40px;
-    
+
 }
 
 .btn {
@@ -62,12 +62,13 @@
     padding: 10px 30px 10px 30px;
 }
 
-.btn:hover{
-   border-color: #EDAD66;
-   color: #EDAD66;
+.btn:hover {
+    border-color: #EDAD66;
+    color: #EDAD66;
 }
 
-.btn:first-child:active, :not(.btn-check)+.btn:active {
+.btn:first-child:active,
+:not(.btn-check)+.btn:active {
     color: #EDAD66;
     background-color: var(--bs-btn-active-bg);
     border-color: var(--bs-btn-active-border-color);
@@ -83,77 +84,98 @@
 
 /*^ --------------------- Modal Novo -------------------- */
 
-.modal-header hr{
+.modal-header hr {
     background-color: #006078;
     width: auto;
     height: 3px;
     border: 0px;
     margin: 0px;
-    
+
 }
 
-.modal-header h1{
+.modal-content {
+    font-weight: 500;
+
+}
+
+.modal-header {
+    justify-content: center !important;
+}
+
+.modal-header h1 {
     margin: 0px 30px 0px 30px;
 }
 
-.modal-header{
-    justify-content: center !important;
-    
-}
-
-.modal-header .btn-close{
+.modal-header .btn-close {
     margin-left: 0px;
-    flex-grow: ;
+
 }
 
-.modal-content{
-    font-weight: 500;
-    border-color: #006078;
+.modal-body {
+    overflow-x: auto;
+    /* ou "scroll" */
+    white-space: nowrap;
+    /* Impede que o conteúdo quebre em várias linhas */
+
 }
 
-.modal-body div{
+.modal-body div {
     margin-bottom: 20px;
     padding-left: 20px;
     padding-right: 20px;
-   
+
 }
 
-.modal-footer{
+
+#btn-salvar {
+    background-color: #006078;
+}
+
+#btn-salvar:hover {
+    background-color: transparent;
+    border-color: #006078;
+    color: #006078;
+}
+
+
+#btn-cancelar {
+    background-color: #FF0000;
+}
+
+#btn-cancelar:hover {
+    background-color: transparent;
+    border-color: #FF0000;
+    color: #FF0000;
+}
+
+
+.modal-footer {
     justify-content: center;
     padding-top: 20px;
     padding-bottom: 30px;
     gap: 30px;
-    
+
 }
 
-#btn-salvar{
-    background-color: #006078;
-    
-}
-
-#btn-cancelar{
-    background-color: #FF0000;
-}
 
 /*^ --------------- Tabela ---------------- */
-/* .table {
-    border-color: #006078;
 
-} */
 
-/* .tabela-head{
-    background-color: #006078 !important;
-} */
-
-#tabela-head tr{
-    background-color: #006078 !important;
-    color: #FFFFFF;
+.table-bordered {
+    border-color: #0D5F71;
 }
 
-#tabela-container{
+.tabela-head th {
+    background-color: #0D5F71;
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+    font-weight: 400;
+
+}
+
+#tabela-container {
     padding: 0px;
 }
-
 
 
 @media (max-width: 768px) {

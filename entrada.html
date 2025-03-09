@@ -92,7 +92,6 @@
                     </div>
                     <div>
                       <label for="formControlData" class="form-label"></label>Data</label>
-                      <!-- Qual tipo? e como colocar o calendário? -->
                       <input type="date" class="form-control" id="formControlData" placeholder="Dia/Mês/Ano">
                     </div>
                     <div>
@@ -122,6 +121,8 @@
                 <div class="modal-footer">
                   <button type="button" class="btn" data-bs-dismiss="modal" id="btn-salvar">Salvar</button>
                   <button type="button" class="btn" data-bs-dismiss="modal" id="btn-cancelar">Cancelar</button>
+
+                  
                 </div>
               </div>
             </div>
@@ -129,9 +130,9 @@
         </section>
         <!-- Tabela Entrada | Topo fim -->
         <section class="container" id="tabela-container">
-
+        <!-- Quero colocar um scroll no modal, mas quero que o thead fique fixo, como que eu faço isso? -->
           <table class="table table-bordered">
-            <thead id="tabela-head">
+            <thead class="tabela-head">
               <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Data/Hora</th>
@@ -156,7 +157,7 @@
                     <i class="bi bi-arrow-bar-up"></i>
                   </button>
                 </td>
-                <td>
+                <td class="btn-tab">
                   <button>
                     <i class="bi bi-pen-fill"></i>
                   </button>
