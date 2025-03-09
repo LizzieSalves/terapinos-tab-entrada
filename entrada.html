@@ -69,13 +69,69 @@
 
       <div class="container">
         <section id="acoes">
-          <button type="button" class="btn">Novo</button>
+          <!-- Btn Modal Novo -->
+          <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">Novo</button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <div id="modal-topo">
+                    <h1 class="modal-title" id="exampleModalLabel">Entrada</h1>
+                    <hr>
+                  </div>
+                  <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                </div>
+                <div class="modal-body">
+                  <form action="">
+                    <div>
+                      <label for="formControlDescricao" class="form-label"></label>Descrição</label>
+                      <input type="text" class="form-control" id="formControlDescricao" placeholder="">
+                    </div>
+                    <div>
+                      <label for="formControlData" class="form-label"></label>Data</label>
+                      <!-- Qual tipo? e como colocar o calendário? -->
+                      <input type="date" class="form-control" id="formControlData" placeholder="Dia/Mês/Ano">
+                    </div>
+                    <div>
+                      <label for="formControlFormaPagamento" class="form-label"></label>Forma de pagamento</label>
+                        <select class="form-select" aria-label="Select formaPagamento">
+                          <option selected>Selecione o tipo de pagamento</option>
+                          <option value="1">Dinheiro</option>
+                          <option value="2">Débito</option>
+                          <option value="3">Crédito</option>
+                          <option value="3">Pix</option>
+                        </select>
+                    </div>
+                    <div>
+                      <label for="formControlValor" class="form-label"></label>Valor</label>
+                      <input type="text" class="form-control" id="formControlValor" placeholder="">
+                    </div>
+                    <div>
+                      <label for="formControlTipoEntrada" class="form-label"></label>Tipos de Entrada</label>
+                      <input type="text" class="form-control" id="formControlTipoEntrada" placeholder="Ex: Consulta">
+                    </div>
+                    <div class="mb-3">
+                      <label for="formFileMultiple" class="form-label">Anexo</label>
+                      <input class="form-control" type="file" id="formFileMultiple" multiple>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn" data-bs-dismiss="modal" id="btn-salvar">Salvar</button>
+                  <button type="button" class="btn" data-bs-dismiss="modal" id="btn-cancelar">Cancelar</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
         <!-- Tabela Entrada | Topo fim -->
         <section class="container" id="tabela-container">
 
           <table class="table table-bordered">
-            <thead class="tabela-head">
+            <thead id="tabela-head">
               <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Data/Hora</th>
@@ -151,7 +207,8 @@
     <!-- Tabela Entrada | fim  -->
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    crossorigin="anonymous"></script>
   <script src="/sidebar-terapinos/script.js"></script>
 </body>
 

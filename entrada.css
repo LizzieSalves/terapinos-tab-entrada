@@ -51,7 +51,6 @@
 /* Ações é a div que contem o botão novo e o filtro */
 #acoes {
     display: flex;
-    gap: 100px;
     padding-top: 20px;
     padding-bottom: 40px;
     
@@ -63,16 +62,77 @@
     padding: 10px 30px 10px 30px;
 }
 
-#btn-filtro {
-    width: 50px;
-    height: 50px;
-    justify-content: center;
-    align-items: center;
+.btn:hover{
+   border-color: #EDAD66;
+   color: #EDAD66;
 }
 
+.btn:first-child:active, :not(.btn-check)+.btn:active {
+    color: #EDAD66;
+    background-color: var(--bs-btn-active-bg);
+    border-color: var(--bs-btn-active-border-color);
+}
 
-.bi-filter {
-    font-size: 50px;
+.btn:focus-visible {
+    background-color: #EDAD66;
+    color: #FFFFFF;
+    border-color: var(--bs-btn-hover-border-color);
+    outline: 0;
+    box-shadow: var(--bs-btn-focus-box-shadow);
+}
+
+/*^ --------------------- Modal Novo -------------------- */
+
+.modal-header hr{
+    background-color: #006078;
+    width: auto;
+    height: 3px;
+    border: 0px;
+    margin: 0px;
+    
+}
+
+.modal-header h1{
+    margin: 0px 30px 0px 30px;
+}
+
+.modal-header{
+    justify-content: center !important;
+    
+}
+
+.modal-header .btn-close{
+    margin-left: 0px;
+    flex-grow: ;
+}
+
+.modal-content{
+    font-weight: 500;
+    border-color: #006078;
+}
+
+.modal-body div{
+    margin-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+   
+}
+
+.modal-footer{
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    gap: 30px;
+    
+}
+
+#btn-salvar{
+    background-color: #006078;
+    
+}
+
+#btn-cancelar{
+    background-color: #FF0000;
 }
 
 /*^ --------------- Tabela ---------------- */
@@ -85,7 +145,7 @@
     background-color: #006078 !important;
 } */
 
-thead{
+#tabela-head tr{
     background-color: #006078 !important;
     color: #FFFFFF;
 }
