@@ -75,7 +75,7 @@
           <!-- Modal -->
           <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
               <div class="modal-content">
                 <div class="modal-header">
                   <div id="modal-topo">
@@ -84,7 +84,7 @@
                   </div>
                   <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                 </div>
-                <div class="modal-body">
+                <div class="modal-body modal-novo">
                   <form action="">
                     <div>
                       <label for="formControlDescricao" class="form-label"></label>Descrição</label>
@@ -96,13 +96,13 @@
                     </div>
                     <div>
                       <label for="formControlFormaPagamento" class="form-label"></label>Forma de pagamento</label>
-                        <select class="form-select" aria-label="Select formaPagamento">
-                          <option selected>Selecione o tipo de pagamento</option>
-                          <option value="1">Dinheiro</option>
-                          <option value="2">Débito</option>
-                          <option value="3">Crédito</option>
-                          <option value="3">Pix</option>
-                        </select>
+                      <select class="form-select" aria-label="Select formaPagamento">
+                        <option selected>Selecione o tipo de pagamento</option>
+                        <option value="1">Dinheiro</option>
+                        <option value="2">Débito</option>
+                        <option value="3">Crédito</option>
+                        <option value="3">Pix</option>
+                      </select>
                     </div>
                     <div>
                       <label for="formControlValor" class="form-label"></label>Valor</label>
@@ -122,7 +122,7 @@
                   <button type="button" class="btn" data-bs-dismiss="modal" id="btn-salvar">Salvar</button>
                   <button type="button" class="btn" data-bs-dismiss="modal" id="btn-cancelar">Cancelar</button>
 
-                  
+
                 </div>
               </div>
             </div>
@@ -130,7 +130,7 @@
         </section>
         <!-- Tabela Entrada | Topo fim -->
         <section class="container" id="tabela-container">
-        <!-- Quero colocar um scroll no modal, mas quero que o thead fique fixo, como que eu faço isso? -->
+          <!-- Quero colocar um scroll no modal, mas quero que o thead fique fixo, como que eu faço isso? -->
           <table class="table table-bordered">
             <thead class="tabela-head">
               <tr>
@@ -159,11 +159,37 @@
                 </td>
                 <td class="btn-tab">
                   <button>
-                    <i class="bi bi-pen-fill"></i>
+                    <i class="bi bi-pen-fill text-warning"></i>
                   </button>
-                  <button>
-                    <i class="bi bi-trash-fill"></i>
+
+                  <!-- Button modal excluir -->
+                  <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    <i class="bi bi-trash-fill text-danger"></i>
                   </button>
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header modal-header-excluir">
+                          <h1 class="modal-title fs-5" id="staticBackdropLabel">Você tem certeza?</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body modal-excluir">
+                          <div>
+                            <h6>Ao cancelar, suas alterações não serão salvas. Deseja continuar?</h6>
+                          </div>
+                        </div>
+                        <div class="modal-footer modal-footer-excluir">
+                          <button type="button" class="btn btn-sim" data-bs-dismiss="modal">Sim</button>
+                          <!-- <button type="button" class="btn" data-bs-dismiss="modal">Não</button> -->
+                         
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </td>
               </tr>
               <tr>

@@ -60,6 +60,7 @@
     background-color: #EDAD66;
     color: #FFFFFF;
     padding: 10px 30px 10px 30px;
+    border-radius: 10px;
 }
 
 .btn:hover {
@@ -111,7 +112,7 @@
 
 }
 
-.modal-body {
+.modal-novo {
     overflow-x: auto;
     /* ou "scroll" */
     white-space: nowrap;
@@ -119,7 +120,7 @@
 
 }
 
-.modal-body div {
+.modal-novo div {
     margin-bottom: 20px;
     padding-left: 20px;
     padding-right: 20px;
@@ -165,16 +166,61 @@
     border-color: #0D5F71;
 }
 
-.tabela-head th {
-    background-color: #0D5F71;
+.table thead th {
+    background-color: #006078;
     border-color: #FFFFFF;
     color: #FFFFFF;
     font-weight: 400;
-
 }
 
 #tabela-container {
     padding: 0px;
+}
+
+/* ----- Ações ------ */
+td button{
+    background-color: transparent;
+}
+
+.modal-excluir{
+    justify-content: center;
+    
+}
+
+/* terminar de ajustar - Responsivo */
+
+
+.btn-sim{
+    background-color: #FF0000;
+    
+}
+
+.btn-sim:hover{
+    border-color: #FF0000;
+    color: #FF0000;
+}
+
+
+.modal-header-excluir{
+    border: none;
+}
+
+.modal-excluir{
+   background-color: #EDAD66;
+   /* margin: 0px 50px 0px 50px; */
+}
+
+.modal-excluir div{
+    background-color: #006078;
+}
+
+.modal-excluir h6{
+    font-weight: 300;
+}
+
+
+.modal-footer-excluir{
+    border: none;
 }
 
 
