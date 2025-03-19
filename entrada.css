@@ -177,49 +177,53 @@
     padding: 0px;
 }
 
+.anexo-tab {
+    width: 150px;
+}
+
+.btn-tab {
+    justify-items: center !important;
+}
+
+/** ------------------ Truncamento de Texto ------------------ */
+
+
 /* ----- Ações ------ */
-td button{
+td button {
     background-color: transparent;
 }
 
-.modal-excluir{
+.modal-excluir {
     justify-content: center;
-    
+
 }
 
 /* terminar de ajustar - Responsivo */
 
 
-.btn-sim{
+.btn-sim {
     background-color: #FF0000;
-    
+
 }
 
-.btn-sim:hover{
+.btn-sim:hover {
     border-color: #FF0000;
     color: #FF0000;
 }
 
 
-.modal-header-excluir{
+.modal-header-excluir {
     border: none;
 }
 
-.modal-excluir{
-   background-color: #EDAD66;
-   /* margin: 0px 50px 0px 50px; */
-}
-
-.modal-excluir div{
-    background-color: #006078;
-}
-
-.modal-excluir h6{
-    font-weight: 300;
+.modal-excluir p {
+    padding: 0px 20px 0px 20px;
+    /* margin: 0px 50px 0px 50px; */
 }
 
 
-.modal-footer-excluir{
+
+.modal-footer-excluir {
     border: none;
 }
 

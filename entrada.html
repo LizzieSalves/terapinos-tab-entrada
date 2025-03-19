@@ -109,8 +109,14 @@
                       <input type="text" class="form-control" id="formControlValor" placeholder="">
                     </div>
                     <div>
-                      <label for="formControlTipoEntrada" class="form-label"></label>Tipos de Entrada</label>
-                      <input type="text" class="form-control" id="formControlTipoEntrada" placeholder="Ex: Consulta">
+                      <label for="formControlFormaPagamento" class="form-label"></label>Tipo de Entrada</label>
+                      <select class="form-select" aria-label="Select formaPagamento">
+                        <option selected>Selecione o tipo de pagamento</option>
+                        <option value="1">Consulta</option>
+                        <option value="2">Débito</option>
+                        <option value="3">Crédito</option>
+                        <option value="3">Pix</option>
+                      </select>
                     </div>
                     <div class="mb-3">
                       <label for="formFileMultiple" class="form-label">Anexo</label>
@@ -148,16 +154,14 @@
               <tr>
                 <th scope="row">1</th>
                 <td>01/03/25 - 00:02</td>
-                <td>Alguma descrição</td>
+                <td class="truncate">Alguma descrição</td>
                 <td>Pix</td>
-                <td>R$ 200,00</td>
+                <td>R$ 200,000000000000</td>
                 <td>Consulta</td>
-                <td class="td-container">
-                  <button>
-                    <i class="bi bi-arrow-bar-up"></i>
-                  </button>
+                <td class="td-container anexo-tab">
+                  <input class="form-control " type="file" id="formFileMultiple" multiple>
                 </td>
-                <td class="btn-tab">
+                <td class="btn-tab justify-content-center">
                   <button>
                     <i class="bi bi-pen-fill text-warning"></i>
                   </button>
@@ -178,13 +182,13 @@
                         </div>
                         <div class="modal-body modal-excluir">
                           <div>
-                            <h6>Ao cancelar, suas alterações não serão salvas. Deseja continuar?</h6>
+                            <p>Ao cancelar, suas alterações não serão salvas. Deseja continuar?</p>
                           </div>
                         </div>
                         <div class="modal-footer modal-footer-excluir">
                           <button type="button" class="btn btn-sim" data-bs-dismiss="modal">Sim</button>
                           <!-- <button type="button" class="btn" data-bs-dismiss="modal">Não</button> -->
-                         
+
                         </div>
                       </div>
                     </div>
@@ -213,7 +217,7 @@
                 <td>R$ 200,00</td>
                 <td>Consulta</td>
                 <td></td>
-                <td>
+                <td class="">
                   <i class="bi bi-pen-fill"></i>
                   <i class="bi bi-trash-fill"></i>
                 </td>
