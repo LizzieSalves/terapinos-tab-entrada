@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="/sidebar-terapinos/styles.css">
   <link rel="shortcut icon" href="/sidebar-terapinos/src/icon.png" type="image/x-icon">
   <link rel="stylesheet" href="entrada.css">
+  <link rel="stylesheet" href="teste.js">
 </head>
 
 <body>
@@ -46,7 +47,8 @@
                   <form action="">
                     <div>
                       <label for="data" class="form-label">Data</label>
-                      <input type="date" class="form-control" id="data" placeholder="Dia/Mês/Ano">
+                      <input type="date" class="form-control" data-sb-validations="required"  id="data" placeholder="Dia/Mês/Ano" >
+                      <span class="span-required">Campo obrigatório!</span>
                     </div>
                     <div>
                       <label for="tipoEntrada" class="form-label">Tipo de Entrada</label>
@@ -57,10 +59,12 @@
                         <option value="3">Crédito</option>
                         <option value="4">Pix</option>
                       </select>
+                      <span class="span-required">Campo obrigatório!</span>
                     </div>
                     <div>
                       <label for="descricao" class="form-label">Descrição</label>
-                      <input type="text" class="form-control" id="descricao" placeholder="">
+                      <input type="text" class="form-control" data-sb-validations="required"  id="descricao" placeholder="">
+                      <span class="span-required">Campo obrigatório!</span>
                     </div>
                     <div>
                       <label for="formaPagamento" class="form-label">Forma de pagamento</label>
@@ -71,10 +75,12 @@
                         <option value="3">Retorno</option>
                         <option value="4">Outro</option>
                       </select>
+                      <span class="span-required">Campo obrigatório!</span>
                     </div>
                     <div>
                       <label for="valor" class="form-label">Valor</label>
-                      <input type="text" class="form-control" id="valor" placeholder="">
+                      <input type="text" class="form-control" data-sb-validations="required"  id="valor" placeholder="">
+                      <span class="span-required">Campo obrigatório!</span>
                     </div>
 
                     <div class="mb-3">
@@ -85,7 +91,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="submit" class="btn" data-bs-dismiss="modal" id="btn-salvar"
-                    onclick="addRow()">Salvar</button>
+                    oninput="validateForm()">Salvar</button>
                   <button type="button" class="btn" data-bs-dismiss="modal" id="btn-cancelar">Cancelar</button>
                 </div>
               </div>
@@ -134,7 +140,7 @@
     </section>
   </main>
 
- <script>
+ <!-- <script>
   // Função para adicionar uma nova linha
 function addRow() {
   const data = document.getElementById("data").value;
@@ -364,7 +370,7 @@ document.querySelector("#tabela-container table tbody").addEventListener("click"
     }
   }
 });
- </script>
+ </script> -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     crossorigin="anonymous"></script>
   <script src="/sidebar-terapinos/script.js"></script>
