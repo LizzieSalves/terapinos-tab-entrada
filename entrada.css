@@ -185,8 +185,27 @@
     justify-items: center !important;
 }
 
-/** ------------------ Truncamento de Texto ------------------ */
+** ------------------ Truncamento de Texto ------------------ */ 
+.truncate {
+    display: inline-block;
+    max-width: 450px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
 
+@media (max-width: 1200px) {
+    .truncate {
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 600px) {
+    .truncate {
+        max-width: 230px;
+    }
+}
 
 /* ----- Ações ------ */
 td button {

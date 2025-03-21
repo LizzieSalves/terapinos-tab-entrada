@@ -54,9 +54,6 @@
   </section>
   <!-- Sidebar fim -->
 
-  <!-- Codigo feito por: Elizabeth S. Alves -->
-
-  <!-- Tabela Entrada | Topo inicio -->
   <main id="main-container">
     <section id="principal" class="">
       <section id="tab_topo" class="container">
@@ -81,7 +78,6 @@
                     <h1 class="modal-title" id="exampleModalLabel">Entrada</h1>
                     <hr>
                   </div>
-                  <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                 </div>
                 <div class="modal-body modal-novo">
                   <form action="">
@@ -94,9 +90,9 @@
                       <select class="form-select" aria-label="Select formaPagamento" id="tipoEntrada">
                         <option selected>Selecione o tipo de pagamento</option>
                         <option value="1">Consulta</option>
-                        <option value="2">Débito</option>
-                        <option value="3">Crédito</option>
-                        <option value="3">Pix</option>
+                        <option value="2">Revisão</option>
+                        <option value="3">Retorno</option>
+                        <option value="4">Outro</option>
                       </select>
                     </div>
                     <div>
@@ -110,7 +106,7 @@
                         <option value="1">Dinheiro</option>
                         <option value="2">Débito</option>
                         <option value="3">Crédito</option>
-                        <option value="3">Pix</option>
+                        <option value="4">Pix</option>
                       </select>
                     </div>
                     <div>
@@ -140,10 +136,10 @@
               <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Data/Hora</th>
+                <th scope="col">Tipo de Entrada</th>
                 <th scope="col">Descrição</th>
                 <th scope="col">Forma de Pagamento</th>
                 <th scope="col">Valor</th>
-                <th scope="col">Tipo de Entrada</th>
                 <th scope="col">Anexo</th>
                 <th scope="col">Ações</th>
               </tr>
@@ -152,18 +148,20 @@
               <tr>
                 <th scope="row">1</th>
                 <td>01/03/25 - 00:02</td>
-                <td class="truncate">Alguma descrição</td>
-                <td>Pix</td>
-                <td>R$ 200,000000000000</td>
                 <td>Consulta</td>
+                <td class="truncate">Alguma coisa</td>
+                <td>Pix</td>
+                <td>R$ 50</td>
                 <td class="td-container anexo-tab">
                   <input class="form-control " type="file" id="formFileMultiple" multiple>
                 </td>
                 <td class="btn-tab justify-content-center">
-                  <button>
-                    <i class="bi bi-pen-fill text-warning delete-btn"></i>
+                  <button onclick="editRow(this)">
+                    <i class="bi bi-pen-fill text-warning"></i>
                   </button>
-
+                  <button type="button">
+                    <i class="bi bi-trash-fill text-danger delete-btn"></i>
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -173,7 +171,6 @@
     </section>
   </main>
 
-  <!-- Tabela Java Script -->
   <script>
     // Função para adicionar uma nova linha
     function addRow() {
@@ -207,17 +204,19 @@
       // Preencher as células com os dados
       cell1.textContent = table.rows.length; // ID
       cell2.textContent = data;
-      cell3.textContent = descricao;
-      cell4.textContent = formaPagamento;
-      cell5.textContent = valor;
-      cell6.textContent = tipoEntrada;
+      cell3.textContent = tipoEntrada;
+      cell4.textContent = descricao; // Usa o valor real do select
+      cell5.textContent = formaPagamento;
+      cell6.textContent = valor; // Usa o valor real do select
       cell7.innerHTML = `<input class="form-control" type="file" multiple>`;
       cell8.innerHTML = `
-        <button><i class="bi bi-pen-fill text-warning"></i></button>
-        <button type="button">
-          <i class="bi bi-trash-fill text-danger delete-btn"></i>
-        </button>
-      `;
+      <button onclick="editRow(this)">
+        <i class="bi bi-pen-fill text-warning"></i>
+      </button>
+      <button type="button">
+        <i class="bi bi-trash-fill text-danger delete-btn"></i>
+      </button>
+    `;
 
       // Limpar os campos de entrada
       document.getElementById("data").value = "";
@@ -228,10 +227,166 @@
       document.getElementById("anexo").value = "";
     }
 
-    // Função para remover uma linha
-    function removeRow(button) {
-      const row = button.parentNode.parentNode;
-      row.parentNode.removeChild(row);
+    // Função para editar uma linha
+    function editRow(button) {
+      const row = button.closest("tr"); // Encontra a linha mais próxima
+      const cells = row.querySelectorAll("td");
+
+      // Verifica se a linha já está em modo de edição
+      if (row.classList.contains("editing")) {
+        // Sai do modo de edição e salva os valores
+        cells.forEach((cell, index) => {
+          if (index === 1) { // Coluna de Data/Hora
+            const inputDate = cell.querySelector("input[type='date']");
+            const inputTime = cell.querySelector("input[type='time']");
+            if (inputDate && inputTime) {
+              const data = inputDate.value;
+              const hora = inputTime.value || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+              cell.textContent = `${data} - ${hora}`; // Formata a data e hora
+            }
+          } else if (index === 2) { // Coluna de Tipo de Entrada
+            const select = cell.querySelector("select");
+            if (select) {
+              cell.textContent = select.value; // Salva o valor selecionado
+            }
+          } else if (index === 4) { // Coluna de Forma de Pagamento 
+            const select = cell.querySelector("select");
+            if (select) {
+              cell.textContent = select.value; // Salva o valor selecionado
+            }
+          } else if (index !== 6) { // Ignora a coluna de anexo
+            const input = cell.querySelector("input");
+            if (input) {
+              cell.textContent = input.value; // Salva o valor do input
+            }
+          }
+        });
+        row.classList.remove("editing");
+        button.innerHTML = `<i class="bi bi-pen-fill text-warning"></i>`; // Volta ao ícone de editar
+      } else {
+        // Armazena os valores originais antes de entrar no modo de edição
+        row.originalValues = [];
+        cells.forEach((cell, index) => {
+          if (index !== 6) { // Ignora a coluna de anexo
+            row.originalValues.push(cell.textContent); // Salva o valor original
+          }
+        });
+
+        // Entra no modo de edição
+        cells.forEach((cell, index) => {
+          if (index === 1) { // Coluna de Data/Hora
+            const [data, hora] = cell.textContent.split(" - "); // Separa data e hora
+            cell.innerHTML = `
+            <input type="date" value="${data}" class="form-control">
+            <input type="time" value="${hora || ''}" class="form-control mt-1">
+          `;
+          } else if (index === 2) { // Coluna de Tipo de Entrada
+            const tipoEntrada = cell.textContent;
+            cell.innerHTML = `
+            <select class="form-select">
+              <option value="Consulta" ${tipoEntrada === "Consulta" ? "selected" : ""}>Consulta</option>
+              <option value="Revisão" ${tipoEntrada === "Revisão" ? "selected" : ""}>Revisão</option>
+              <option value="Retorno" ${tipoEntrada === "Retorno" ? "selected" : ""}>Retorno</option>
+              <option value="Outro" ${tipoEntrada === "Outro" ? "selected" : ""}>Outro</option>
+            </select>
+          `;
+          } else if (index === 4) { // Coluna de Forma de Pagamento
+            const formaPagamento = cell.textContent;
+            cell.innerHTML = `
+            <select class="form-select">
+              <option value="Dinheiro" ${formaPagamento === "Dinheiro" ? "selected" : ""}>Dinheiro</option>
+              <option value="Débito" ${formaPagamento === "Débito" ? "selected" : ""}>Débito</option>
+              <option value="Crédito" ${formaPagamento === "Crédito" ? "selected" : ""}>Crédito</option>
+              <option value="Pix" ${formaPagamento === "Pix" ? "selected" : ""}>Pix</option>
+            </select>
+          `;
+
+          } else if (index !== 6) { // Ignora a coluna de anexo
+            const text = cell.textContent;
+            cell.innerHTML = `<input type="text" value="${text}" class="form-control">`; // Transforma em input
+          }
+        });
+        row.classList.add("editing");
+        // Substitui os botões de editar/excluir por salvar/cancelar
+        const actionsCell = row.querySelector("td:last-child");
+        actionsCell.innerHTML = `
+        <button onclick="saveRow(this)">
+          <i class="bi bi-check-circle-fill text-success"></i>
+        </button>
+        <button onclick="cancelEdit(this)">
+          <i class="bi bi-x-circle-fill text-danger"></i>
+        </button>
+      `;
+      }
+    }
+
+    // Função para salvar a edição
+    function saveRow(button) {
+      const row = button.closest("tr");
+      const cells = row.querySelectorAll("td");
+
+      cells.forEach((cell, index) => {
+        if (index === 1) { // Coluna de Data/Hora
+          const inputDate = cell.querySelector("input[type='date']");
+          const inputTime = cell.querySelector("input[type='time']");
+          if (inputDate && inputTime) {
+            const data = inputDate.value;
+            const hora = inputTime.value || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            cell.textContent = `${data} - ${hora}`; // Formata a data e hora
+          } 
+        } else if (index === 2) { // Coluna de Tipo de Entrada
+          const select = cell.querySelector("select");
+          if (select) {
+            cell.textContent = select.value; // Salva o valor selecionado
+          }
+        } else if (index === 4) { // Coluna de Forma de Pagamento
+          const select = cell.querySelector("select");
+          if (select) {
+            cell.textContent = select.value; // Salva o valor selecionado
+          }
+        } else if (index !== 6) { // Ignora a coluna de anexo
+          const input = cell.querySelector("input");
+          if (input) {
+            cell.textContent = input.value; // Salva o valor do input
+          }
+        }
+      });
+
+      // Volta aos botões de editar/excluir
+      const actionsCell = row.querySelector("td:last-child");
+      actionsCell.innerHTML = `
+      <button onclick="editRow(this)">
+        <i class="bi bi-pen-fill text-warning"></i>
+      </button>
+      <button type="button">
+        <i class="bi bi-trash-fill text-danger delete-btn"></i>
+      </button>
+    `;
+      row.classList.remove("editing");
+    }
+
+    // Função para cancelar a edição
+    function cancelEdit(button) {
+      const row = button.closest("tr");
+      const cells = row.querySelectorAll("td");
+
+      cells.forEach((cell, index) => {
+        if (index !== 6) { // Ignora a coluna de anexo
+          cell.textContent = row.originalValues[index]; // Restaura o valor original
+        }
+      });
+
+      // Volta aos botões de editar/excluir
+      const actionsCell = row.querySelector("td:last-child");
+      actionsCell.innerHTML = `
+      <button onclick="editRow(this)">
+        <i class="bi bi-pen-fill text-warning"></i>
+      </button>
+      <button type="button">
+        <i class="bi bi-trash-fill text-danger delete-btn"></i>
+      </button>
+    `;
+      row.classList.remove("editing");
     }
 
     // Delegação de eventos para o ícone de exclusão
@@ -239,7 +394,7 @@
       if (event.target.classList.contains("delete-btn")) {
         // Exibe um alerta de confirmação
         const confirmacao = confirm("Tem certeza que deseja excluir esta linha?");
-        
+
         // Se o usuário confirmar, remove a linha
         if (confirmacao) {
           const row = event.target.closest("tr"); // Encontra a linha mais próxima
