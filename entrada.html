@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="/sidebar-terapinos/styles.css">
   <link rel="shortcut icon" href="/sidebar-terapinos/src/icon.png" type="image/x-icon">
   <link rel="stylesheet" href="entrada.css">
+  <script src="teste.js"></script>
 </head>
 
 <body>
@@ -63,7 +64,9 @@
         </div>
       </section>
 
-      <div class="container">
+
+
+      <div class="container mt-5">
         <section id="acoes">
           <!-- Btn Modal Novo -->
           <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">Novo</button>
@@ -80,39 +83,43 @@
                   </div>
                 </div>
                 <div class="modal-body modal-novo">
-                  <form action="">
+                  <form action="" id="form">
                     <div>
                       <label for="data" class="form-label">Data</label>
                       <input type="date" class="form-control" id="data" placeholder="Dia/Mês/Ano">
-                      <span class="span-required">Seu nome é obrigatório!</span>
+                      <span class="span-required" id="data-error">Campo obrigatório!</span>
                     </div>
                     <div>
                       <label for="tipoEntrada" class="form-label">Tipo de Entrada</label>
-                      <select class="form-select" aria-label="Select formaPagamento" id="tipoEntrada">
+                      <select class="form-select" id="tipoEntrada">
+                        <option selected>Selecione o tipo de pagamento</option>
+                        <option value="1">Consulta</option>
+                        <option value="2">Débito</option>
+                        <option value="3">Crédito</option>
+                        <option value="4">Pix</option>
+                      </select>
+                      <span class="span-required" id="tipoEntrada-error">Campo obrigatório!</span>
+                    </div>
+                    <div>
+                      <label for="descricao" class="form-label">Descrição</label>
+                      <input type="text" class="form-control" id="descricao" placeholder="">
+                      <span class="span-required" id="descricao-error">Campo obrigatório!</span>
+                    </div>
+                    <div>
+                      <label for="formaPagamento" class="form-label">Forma de pagamento</label>
+                      <select class="form-select" id="formaPagamento">
                         <option selected>Selecione o tipo de pagamento</option>
                         <option value="1">Consulta</option>
                         <option value="2">Revisão</option>
                         <option value="3">Retorno</option>
                         <option value="4">Outro</option>
                       </select>
-                    </div>
-                    <div>
-                      <label for="descricao" class="form-label">Descrição</label>
-                      <input type="text" class="form-control" id="descricao" placeholder="">
-                    </div>
-                    <div>
-                      <label for="formaPagamento" class="form-label">Forma de pagamento</label>
-                      <select class="form-select" aria-label="Select formaPagamento" id="formaPagamento">
-                        <option selected>Selecione o tipo de pagamento</option>
-                        <option value="1">Dinheiro</option>
-                        <option value="2">Débito</option>
-                        <option value="3">Crédito</option>
-                        <option value="4">Pix</option>
-                      </select>
+                      <span class="span-required" id="formaPagamento-error">Campo obrigatório!</span>
                     </div>
                     <div>
                       <label for="valor" class="form-label">Valor</label>
                       <input type="text" class="form-control" id="valor" placeholder="">
+                      <span class="span-required" id="valor-error">Campo obrigatório!</span>
                     </div>
 
                     <div class="mb-3">
@@ -122,52 +129,52 @@
                   </form>
                 </div>
                 <div class="modal-footer">
-                  <button type="submit" class="btn" data-bs-dismiss="modal" id="btn-salvar"
-                    onclick="addRow()">Salvar</button>
+                  <button type="button" class="btn" id="btn-salvar" onclick="validateForm()">Salvar</button>
                   <button type="button" class="btn" data-bs-dismiss="modal" id="btn-cancelar">Cancelar</button>
                 </div>
               </div>
             </div>
           </div>
         </section>
-        <!-- Tabela Entrada | Topo fim -->
-        <section class="container" id="tabela-container">
-          <table class="table table-bordered">
-            <thead class="tabela-head">
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Data/Hora</th>
-                <th scope="col">Tipo de Entrada</th>
-                <th scope="col">Descrição</th>
-                <th scope="col">Forma de Pagamento</th>
-                <th scope="col">Valor</th>
-                <th scope="col">Anexo</th>
-                <th scope="col">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>01/03/25 - 00:02</td>
-                <td>Consulta</td>
-                <td class="truncate">Alguma coisa</td>
-                <td>Pix</td>
-                <td>R$ 50</td>
-                <td class="td-container anexo-tab">
-                  <input class="form-control " type="file" id="formFileMultiple" multiple>
-                </td>
-                <td class="btn-tab justify-content-center">
-                  <button onclick="editRow(this)">
-                    <i class="bi bi-pen-fill text-warning"></i>
-                  </button>
-                  <button type="button">
-                    <i class="bi bi-trash-fill text-danger delete-btn"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
+      </div>
+      <!-- Tabela Entrada | Topo fim -->
+      <section class="container" id="tabela-container">
+        <table class="table table-bordered">
+          <thead class="tabela-head">
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Data/Hora</th>
+              <th scope="col">Tipo de Entrada</th>
+              <th scope="col">Descrição</th>
+              <th scope="col">Forma de Pagamento</th>
+              <th scope="col">Valor</th>
+              <th scope="col">Anexo</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td>01/03/25 - 00:02</td>
+              <td>Consulta</td>
+              <td class="truncate">Alguma coisa</td>
+              <td>Pix</td>
+              <td>R$ 50</td>
+              <td class="td-container anexo-tab">
+                <input class="form-control " type="file" id="formFileMultiple" multiple>
+              </td>
+              <td class="btn-tab justify-content-center">
+                <button onclick="editRow(this)">
+                  <i class="bi bi-pen-fill text-warning"></i>
+                </button>
+                <button type="button">
+                  <i class="bi bi-trash-fill text-danger delete-btn"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
       </div>
     </section>
   </main>
@@ -334,7 +341,7 @@
             const data = inputDate.value;
             const hora = inputTime.value || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             cell.textContent = `${data} - ${hora}`; // Formata a data e hora
-          } 
+          }
         } else if (index === 2) { // Coluna de Tipo de Entrada
           const select = cell.querySelector("select");
           if (select) {

@@ -158,6 +158,17 @@
 
 }
 
+/* validação */
+.span-required {
+    color: red;
+    font-size: 12px;
+    display: none; /* Inicia oculto */
+}
+
+.is-invalid {
+    border-color: red;
+}
+
 
 /*^ --------------- Tabela ---------------- */
 
