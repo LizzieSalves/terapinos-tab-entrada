@@ -46,7 +46,7 @@ function validateForm() {
     const valor = document.getElementById('valor');
     const valorError = document.getElementById('valor-error');
     const valorValue = valor.value.trim();
-    if (!valorValue || isNaN(valorValue)) {
+    if (!valorValue || isNaN(valorValue.replace(/[^\d,]/g, '').replace(',', '.'))) {
         valid = false;
         valor.classList.add('is-invalid');
         valorError.style.display = 'inline'; // Mostra a mensagem de erro
@@ -88,12 +88,46 @@ document.getElementById('valor').addEventListener('input', function (event) {
     event.target.value = valor.replace(/[^0-9.,]/g, '');
 });
 
+// Função para formatar o valor como moeda (R$ 1.000,00) enquanto o usuário digita
+document.getElementById('valor').addEventListener('input', function (event) {
+    let valor = event.target.value;
+
+    // Remover tudo o que não for número ou vírgula
+    valor = valor.replace(/[^\d,]/g, '');  // Remove caracteres não numéricos, mas mantém a vírgula
+
+    // Se houver algum valor, começa a formatação
+    if (valor) {
+        // Primeiro, separa a parte inteira da parte decimal (caso exista)
+        let [inteiro, decimal] = valor.split(',');
+
+        // Formatar a parte inteira com separador de milhar (ponto)
+        inteiro = inteiro.replace(/\B(?=(\d{3})+(?!\d))/g, '.');  // Adiciona ponto como separador de milhar
+
+        // Limitar a parte decimal a 2 casas decimais
+        if (decimal) {
+            decimal = decimal.substring(0, 2);  // Limita a parte decimal a 2 dígitos
+        }
+
+        // Combina as partes inteira e decimal
+        if (decimal) {
+            valor = `${inteiro},${decimal}`;
+        } else {
+            valor = inteiro; // Se não tiver parte decimal, apenas a parte inteira
+        }
+    }
+
+    // Coloca o símbolo "R$" na frente do valor
+    event.target.value = 'R$ ' + valor;
+});
+
 // Função para adicionar uma nova linha
 function addRow() {
     const data = document.getElementById("data").value;
-    const tipoEntrada = document.getElementById("tipoEntrada").value;
+    const tipoEntrada = document.getElementById("tipoEntrada");
+    const tipoEntradaValue = tipoEntrada.options[tipoEntrada.selectedIndex].text; // Nome da seleção
     const descricao = document.getElementById("descricao").value;
-    const formaPagamento = document.getElementById("formaPagamento").value;
+    const formaPagamento = document.getElementById("formaPagamento");
+    const formaPagamentoValue = formaPagamento.options[formaPagamento.selectedIndex].text; // Nome da seleção
     const valor = document.getElementById("valor").value;
     const anexo = document.getElementById("anexo").value;
 
@@ -114,10 +148,10 @@ function addRow() {
     // Preencher as células com os dados
     cell1.textContent = table.rows.length; // ID
     cell2.textContent = data;
-    cell3.textContent = tipoEntrada;
+    cell3.textContent = tipoEntradaValue;  // Exibe o nome do tipo de entrada
     cell4.textContent = descricao; // Usa o valor real do select
-    cell5.textContent = formaPagamento;
-    cell6.textContent = valor; // Usa o valor real do select
+    cell5.textContent = formaPagamentoValue; // Exibe o nome da forma de pagamento
+    cell6.textContent = 'R$ ' + valor; // Usa o valor real do select
     cell7.innerHTML = `<input class="form-control" type="file" multiple>`;
     cell8.innerHTML = `
     <button onclick="editRow(this)">
