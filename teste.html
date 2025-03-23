@@ -1,149 +1,161 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Validação de Formulário</title>
-
-  <!-- Link para o Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Estilos para a mensagem de erro -->
-  <style>
-    .span-required {
-      color: red;
-      font-size: 12px;
-      display: none;
-      /* Inicia oculto */
-    }
-
-    .is-invalid {
-      border-color: red;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela Dinâmica com HTML, CSS e JS</title>
+    <style>
+        /* Estilos da tabela */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table td, table th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        table th {
+            background-color: #f4f4f4;
+            text-align: left;
+        }
+        table td {
+            max-width: 150px; /* Define um tamanho máximo para a célula */
+            white-space: nowrap; /* Impede que o texto quebre em várias linhas */
+            overflow: hidden; /* Esconde o texto que ultrapassa o tamanho da célula */
+            text-overflow: ellipsis; /* Adiciona "..." ao final do texto truncado */
+        }
+        .acoes button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+    </style>
 </head>
-
 <body>
+    <h1>Tabela Dinâmica</h1>
+    <table id="tabela-dados">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Data</th>
+                <th>Tipo de Entrada</th>
+                <th>Descrição</th>
+                <th>Forma de Pagamento</th>
+                <th>Valor</th>
+                <th>Anexo</th>
+                <th>Data/Hora Envio</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os dados serão inseridos aqui dinamicamente -->
+        </tbody>
+    </table>
 
-  <div class="container mt-5">
-    <section id="acoes">
-      <!-- Btn Modal Novo -->
-      <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">Novo</button>
+    <script>
+        // Dados simulados (substitua por dados reais se necessário)
+        const dados = [
+            {
+                id: 1,
+                data: '2023-10-01',
+                tipo_entrada: 'Consulta',
+                descricao: 'Descrição do serviço prestado ao cliente X.',
+                forma_pagamento: 'Dinheiro',
+                valor: 100.50,
+                anexo: 'arquivo.pdf',
+                data_hora_envio: '2023-10-01T10:00:00'
+            },
+            {
+                id: 2,
+                data: '2023-10-02',
+                tipo_entrada: 'Revisão',
+                descricao: 'Revisão completa do veículo Y.',
+                forma_pagamento: 'Cartão de Crédito',
+                valor: 250.00,
+                anexo: '',
+                data_hora_envio: '2023-10-02T14:30:00'
+            },
+            {
+                id: 3,
+                data: '2023-10-03',
+                tipo_entrada: 'Retorno',
+                descricao: 'Retorno para verificação do serviço realizado.',
+                forma_pagamento: 'Pix',
+                valor: 0.00,
+                anexo: 'foto.jpg',
+                data_hora_envio: '2023-10-03T09:15:00'
+            }
+        ];
 
-      <!-- Modal -->
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header">
-              <div id="modal-topo">
-                <h1 class="modal-title" id="exampleModalLabel">Entrada</h1>
-                <hr>
-              </div>
-            </div>
-            <div class="modal-body modal-novo">
-              <form action="" id="form">
-                <div>
-                  <label for="data" class="form-label">Data</label>
-                  <input type="date" class="form-control" id="data" placeholder="Dia/Mês/Ano">
-                  <span class="span-required" id="data-error">Campo obrigatório!</span>
-                </div>
-                <div>
-                  <label for="tipoEntrada" class="form-label">Tipo de Entrada</label>
-                  <select class="form-select" id="tipoEntrada">
-                    <option selected>Selecione o tipo de pagamento</option>
-                    <option value="1">Consulta</option>
-                    <option value="2">Débito</option>
-                    <option value="3">Crédito</option>
-                    <option value="4">Pix</option>
-                  </select>
-                  <span class="span-required" id="tipoEntrada-error">Campo obrigatório!</span>
-                </div>
-                <div>
-                  <label for="descricao" class="form-label">Descrição</label>
-                  <input type="text" class="form-control" id="descricao" placeholder="">
-                  <span class="span-required" id="descricao-error">Campo obrigatório!</span>
-                </div>
-                <div>
-                  <label for="formaPagamento" class="form-label">Forma de pagamento</label>
-                  <select class="form-select" id="formaPagamento">
-                    <option selected>Selecione o tipo de pagamento</option>
-                    <option value="1">Consulta</option>
-                    <option value="2">Revisão</option>
-                    <option value="3">Retorno</option>
-                    <option value="4">Outro</option>
-                  </select>
-                  <span class="span-required" id="formaPagamento-error">Campo obrigatório!</span>
-                </div>
-                <div>
-                  <label for="valor" class="form-label">Valor</label>
-                  <input type="text" class="form-control" id="valor" placeholder="">
-                  <span class="span-required" id="valor-error">Campo obrigatório! Apenas números são permitidos.</span>
-                </div>
+        // Função para formatar data (dd/mm/aaaa)
+        function formatarData(data) {
+            const [ano, mes, dia] = data.split('-');
+            return `${dia}/${mes}/${ano}`;
+        }
 
-                <div class="mb-3">
-                  <label for="anexo" class="form-label">Anexo</label>
-                  <input class="form-control" type="file" id="anexo" multiple>
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn" id="btn-salvar" onclick="validateForm()">Salvar</button>
-              <button type="button" class="btn" data-bs-dismiss="modal" id="btn-cancelar">Cancelar</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
+        // Função para formatar data e hora (dd/mm/aaaa hh:mm)
+        function formatarDataHora(dataHora) {
+            const data = new Date(dataHora);
+            const dia = String(data.getDate()).padStart(2, '0');
+            const mes = String(data.getMonth() + 1).padStart(2, '0');
+            const ano = data.getFullYear();
+            const hora = String(data.getHours()).padStart(2, '0');
+            const minutos = String(data.getMinutes()).padStart(2, '0');
+            return `${dia}/${mes}/${ano} ${hora}:${minutos}`;
+        }
 
-        <!-- Tabela Entrada | Topo fim -->
-        <section class="container" id="tabela-container">
-          <table class="table table-bordered">
-            <thead class="tabela-head">
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Data/Hora</th>
-                <th scope="col">Tipo de Entrada</th>
-                <th scope="col">Descrição</th>
-                <th scope="col">Forma de Pagamento</th>
-                <th scope="col">Valor</th>
-                <th scope="col">Anexo</th>
-                <th scope="col">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>01/03/25 - 00:02</td>
-                <td>Consulta</td>
-                <td class="truncate">Alguma coisa</td>
-                <td>Pix</td>
-                <td>R$ 50</td>
-                <td class="td-container anexo-tab">
-                  <input class="form-control " type="file" id="formFileMultiple" multiple>
-                </td>
-                <td class="btn-tab justify-content-center">
-                  <button onclick="editRow(this)">
-                    <i class="bi bi-pen-fill text-warning"></i>
-                  </button>
-                  <button type="button">
-                    <i class="bi bi-trash-fill text-danger delete-btn"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-        </div>
-      </section>
-    </main>
-  
+        // Função para preencher a tabela com os dados
+        function preencherTabela() {
+            const tbody = document.querySelector('#tabela-dados tbody');
+            tbody.innerHTML = ''; // Limpa o conteúdo atual
 
-  <!-- Link para o Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+            dados.forEach(item => {
+                const row = `
+                    <tr>
+                        <td>${item.id}</td>
+                        <td>${formatarData(item.data)}</td>
+                        <td>${item.tipo_entrada}</td>
+                        <td>${item.descricao}</td>
+                        <td>${item.forma_pagamento}</td>
+                        <td>R$ ${item.valor.toFixed(2)}</td>
+                        <td>${item.anexo || 'Nenhum'}</td>
+                        <td>${formatarDataHora(item.data_hora_envio)}</td>
+                        <td class="acoes">
+                            <button onclick="editarLinha(${item.id})">
+                                <i class="bi bi-pen-fill text-warning">✏️</i>
+                            </button>
+                            <button onclick="excluirLinha(${item.id})">
+                                <i class="bi bi-trash-fill text-danger">🗑️</i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', row);
+            });
+        }
 
-  <script src="teste.js"></script>
+        // Função para editar uma linha (simulação)
+        function editarLinha(id) {
+            alert(`Editar linha com ID ${id}`);
+            // Aqui você pode abrir um modal ou formulário para editar os dados
+        }
+
+        // Função para excluir uma linha (simulação)
+        function excluirLinha(id) {
+            const confirmacao = confirm(`Tem certeza que deseja excluir a linha com ID ${id}?`);
+            if (confirmacao) {
+                const index = dados.findIndex(item => item.id === id);
+                if (index !== -1) {
+                    dados.splice(index, 1); // Remove o item do array
+                    preencherTabela(); // Atualiza a tabela
+                }
+            }
+        }
+
+        // Preenche a tabela ao carregar a página
+        window.onload = preencherTabela;
+    </script>
 </body>
-
 </html>
