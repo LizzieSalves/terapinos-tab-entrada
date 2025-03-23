@@ -122,7 +122,7 @@ document.getElementById('valor').addEventListener('input', function (event) {
 
 // Função para adicionar uma nova linha
 function addRow() {
-    const data = document.getElementById("data").value;
+    const dataInput = document.getElementById("data").value; // Captura a data do formulário (formato: yyyy-mm-dd)
     const tipoEntrada = document.getElementById("tipoEntrada");
     const tipoEntradaValue = tipoEntrada.options[tipoEntrada.selectedIndex].text; // Nome da seleção
     const descricao = document.getElementById("descricao").value;
@@ -131,9 +131,11 @@ function addRow() {
     const valor = document.getElementById("valor").value;
     const anexo = document.getElementById("anexo").value;
 
-    // Captura a data e hora atual
+    // Formatar a data para o formato dd/mm/aaaa (apenas para exibição na tabela)
+    const dataFormatada = formatarData(dataInput);
+
+    // Captura a data e hora atual para o envio
     const dataHoraEnvio = new Date();
-    const dataFormatada = dataHoraEnvio.toLocaleDateString('pt-BR'); // Formato: dd/mm/aaaa
     const horaFormatada = dataHoraEnvio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); // Formato: hh:mm
 
     // Criar uma nova linha
@@ -142,7 +144,7 @@ function addRow() {
 
     // Adicionar células à linha
     const cell1 = newRow.insertCell(0); // ID
-    const cell2 = newRow.insertCell(1); // Data/Hora do Envio
+    const cell2 = newRow.insertCell(1); // Data do formulário (formatada)
     const cell3 = newRow.insertCell(2); // Tipo de Entrada
     const cell4 = newRow.insertCell(3); // Descrição
     const cell5 = newRow.insertCell(4); // Forma de Pagamento
@@ -152,7 +154,7 @@ function addRow() {
 
     // Preencher as células com os dados
     cell1.textContent = table.rows.length; // ID
-    cell2.textContent = `${dataFormatada} - ${horaFormatada}`; // Data e hora do envio
+    cell2.textContent = `${dataFormatada} - ${horaFormatada}`; // Usa a data formatada (dd/mm/aaaa)
     cell3.textContent = tipoEntradaValue;  // Exibe o nome do tipo de entrada
     cell4.textContent = descricao; // Usa o valor real do select
     cell5.textContent = formaPagamentoValue; // Exibe o nome da forma de pagamento
@@ -168,13 +170,20 @@ function addRow() {
   `;
 
     // Limpar os campos de entrada
-    document.getElementById("data").value = "";
+    document.getElementById("data").value = ""; // Limpa o campo de data
     document.getElementById("tipoEntrada").value = "";
     document.getElementById("descricao").value = "";
     document.getElementById("formaPagamento").value = "";
     document.getElementById("valor").value = "";
     document.getElementById("anexo").value = "";
 }
+
+// Função para formatar a data no formato dd/mm/aaaa
+function formatarData(data) {
+    const [ano, mes, dia] = data.split('-'); // Divide a data em partes
+    return `${dia}/${mes}/${ano}`; // Retorna no formato dd/mm/aaaa
+}
+
 
 // Função para editar uma linha
 function editRow(button) {
@@ -184,39 +193,12 @@ function editRow(button) {
     // Verifica se a linha já está em modo de edição
     if (row.classList.contains("editing")) {
         // Sai do modo de edição e salva os valores
-        cells.forEach((cell, index) => {
-            if (index === 1) { // Coluna de Data/Hora
-                const inputDate = cell.querySelector("input[type='date']");
-                const inputTime = cell.querySelector("input[type='time']");
-                if (inputDate && inputTime) {
-                    const data = inputDate.value;
-                    const hora = inputTime.value || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    cell.textContent = `${data} - ${hora}`; // Formata a data e hora
-                }
-            } else if (index === 2) { // Coluna de Tipo de Entrada
-                const select = cell.querySelector("select");
-                if (select) {
-                    cell.textContent = select.value; // Salva o valor selecionado
-                }
-            } else if (index === 4) { // Coluna de Forma de Pagamento 
-                const select = cell.querySelector("select");
-                if (select) {
-                    cell.textContent = select.value; // Salva o valor selecionado
-                }
-            } else if (index !== 6 && index !== 7) { // Ignora a coluna de anexo e data/hora do envio
-                const input = cell.querySelector("input");
-                if (input) {
-                    cell.textContent = input.value; // Salva o valor do input
-                }
-            }
-        });
-        row.classList.remove("editing");
-        button.innerHTML = `<i class="bi bi-pen-fill text-warning"></i>`; // Volta ao ícone de editar
+        saveRow(button);
     } else {
         // Armazena os valores originais antes de entrar no modo de edição
         row.originalValues = [];
         cells.forEach((cell, index) => {
-            if (index !== 6 && index !== 7) { // Ignora a coluna de anexo e data/hora do envio
+            if (index !== 0 && index !== 6 && index !== 7) { // Ignora a coluna de ID, anexo e data/hora do envio
                 row.originalValues.push(cell.textContent); // Salva o valor original
             }
         });
@@ -249,7 +231,7 @@ function editRow(button) {
             <option value="Pix" ${formaPagamento === "Pix" ? "selected" : ""}>Pix</option>
           </select>
         `;
-            } else if (index !== 6 && index !== 7) { // Ignora a coluna de anexo e data/hora do envio
+            } else if (index !== 0 && index !== 6 && index !== 7) { // Ignora a coluna de ID, anexo e data/hora do envio
                 const text = cell.textContent;
                 cell.innerHTML = `<input type="text" value="${text}" class="form-control">`; // Transforma em input
             }
@@ -292,12 +274,13 @@ function saveRow(button) {
             if (select) {
                 cell.textContent = select.value; // Salva o valor selecionado
             }
-        } else if (index !== 6 && index !== 7) { // Ignora a coluna de anexo e data/hora do envio
+        } else if (index !== 0 && index !== 6 && index !== 7) { // Ignora a coluna de ID, anexo e data/hora do envio
             const input = cell.querySelector("input");
             if (input) {
                 cell.textContent = input.value; // Salva o valor do input
             }
         }
+        
     });
 
     // Volta aos botões de editar/excluir
@@ -318,9 +301,10 @@ function cancelEdit(button) {
     const row = button.closest("tr");
     const cells = row.querySelectorAll("td");
 
+    // Restaura os valores originais
     cells.forEach((cell, index) => {
-        if (index !== 6 && index !== 7) { // Ignora a coluna de anexo e data/hora do envio
-            cell.textContent = row.originalValues[index]; // Restaura o valor original
+        if (index !== 0 && index !== 6 && index !== 7) { // Ignora a coluna de ID, anexo e data/hora do envio
+            cell.textContent = row.originalValues[index - 1]; // Restaura o valor original
         }
     });
 
@@ -336,11 +320,3 @@ function cancelEdit(button) {
   `;
     row.classList.remove("editing");
 }
-
-// Delegação de eventos para o ícone de excluir
-document.querySelector('table tbody').addEventListener('click', function (e) {
-    if (e.target && e.target.matches('i.bi-trash-fill')) {
-        const row = e.target.closest('tr');
-        row.remove(); // Remove a linha
-    }
-});
