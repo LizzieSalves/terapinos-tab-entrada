@@ -131,23 +131,28 @@ function addRow() {
     const valor = document.getElementById("valor").value;
     const anexo = document.getElementById("anexo").value;
 
+    // Captura a data e hora atual
+    const dataHoraEnvio = new Date();
+    const dataFormatada = dataHoraEnvio.toLocaleDateString('pt-BR'); // Formato: dd/mm/aaaa
+    const horaFormatada = dataHoraEnvio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); // Formato: hh:mm
+
     // Criar uma nova linha
     const table = document.querySelector("#tabela-container table tbody");
     const newRow = table.insertRow();
 
     // Adicionar células à linha
-    const cell1 = newRow.insertCell(0);
-    const cell2 = newRow.insertCell(1);
-    const cell3 = newRow.insertCell(2);
-    const cell4 = newRow.insertCell(3);
-    const cell5 = newRow.insertCell(4);
-    const cell6 = newRow.insertCell(5);
-    const cell7 = newRow.insertCell(6);
-    const cell8 = newRow.insertCell(7);
+    const cell1 = newRow.insertCell(0); // ID
+    const cell2 = newRow.insertCell(1); // Data/Hora do Envio
+    const cell3 = newRow.insertCell(2); // Tipo de Entrada
+    const cell4 = newRow.insertCell(3); // Descrição
+    const cell5 = newRow.insertCell(4); // Forma de Pagamento
+    const cell6 = newRow.insertCell(5); // Valor
+    const cell7 = newRow.insertCell(6); // Anexo
+    const cell8 = newRow.insertCell(7); // Ações
 
     // Preencher as células com os dados
     cell1.textContent = table.rows.length; // ID
-    cell2.textContent = data;
+    cell2.textContent = `${dataFormatada} - ${horaFormatada}`; // Data e hora do envio
     cell3.textContent = tipoEntradaValue;  // Exibe o nome do tipo de entrada
     cell4.textContent = descricao; // Usa o valor real do select
     cell5.textContent = formaPagamentoValue; // Exibe o nome da forma de pagamento
@@ -198,7 +203,7 @@ function editRow(button) {
                 if (select) {
                     cell.textContent = select.value; // Salva o valor selecionado
                 }
-            } else if (index !== 6) { // Ignora a coluna de anexo
+            } else if (index !== 6 && index !== 7) { // Ignora a coluna de anexo e data/hora do envio
                 const input = cell.querySelector("input");
                 if (input) {
                     cell.textContent = input.value; // Salva o valor do input
@@ -211,7 +216,7 @@ function editRow(button) {
         // Armazena os valores originais antes de entrar no modo de edição
         row.originalValues = [];
         cells.forEach((cell, index) => {
-            if (index !== 6) { // Ignora a coluna de anexo
+            if (index !== 6 && index !== 7) { // Ignora a coluna de anexo e data/hora do envio
                 row.originalValues.push(cell.textContent); // Salva o valor original
             }
         });
@@ -244,7 +249,7 @@ function editRow(button) {
             <option value="Pix" ${formaPagamento === "Pix" ? "selected" : ""}>Pix</option>
           </select>
         `;
-            } else if (index !== 6) { // Ignora a coluna de anexo
+            } else if (index !== 6 && index !== 7) { // Ignora a coluna de anexo e data/hora do envio
                 const text = cell.textContent;
                 cell.innerHTML = `<input type="text" value="${text}" class="form-control">`; // Transforma em input
             }
@@ -287,7 +292,7 @@ function saveRow(button) {
             if (select) {
                 cell.textContent = select.value; // Salva o valor selecionado
             }
-        } else if (index !== 6) { // Ignora a coluna de anexo
+        } else if (index !== 6 && index !== 7) { // Ignora a coluna de anexo e data/hora do envio
             const input = cell.querySelector("input");
             if (input) {
                 cell.textContent = input.value; // Salva o valor do input
@@ -314,7 +319,7 @@ function cancelEdit(button) {
     const cells = row.querySelectorAll("td");
 
     cells.forEach((cell, index) => {
-        if (index !== 6) { // Ignora a coluna de anexo
+        if (index !== 6 && index !== 7) { // Ignora a coluna de anexo e data/hora do envio
             cell.textContent = row.originalValues[index]; // Restaura o valor original
         }
     });
