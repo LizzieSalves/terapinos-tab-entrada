@@ -320,3 +320,17 @@ function cancelEdit(button) {
   `;
     row.classList.remove("editing");
 }
+
+  // Delegação de eventos para o ícone de exclusão
+  document.querySelector("#tabela-container table tbody").addEventListener("click", function (event) {
+    if (event.target.classList.contains("delete-btn")) {
+      // Exibe um alerta de confirmação
+      const confirmacao = confirm("Tem certeza que deseja excluir esta linha?");
+      
+      // Se o usuário confirmar, remove a linha
+      if (confirmacao) {
+        const row = event.target.closest("tr"); // Encontra a linha mais próxima
+        row.remove(); // Remove a linha
+      }
+    }
+  });
