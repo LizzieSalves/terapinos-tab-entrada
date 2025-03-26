@@ -80,8 +80,6 @@ function formatarValor(input) {
 // Função para adicionar uma nova linha
 function addRow() {
 
-
-
   const dataInput = document.getElementById("dataHora").value; // Captura a data do formulário (formato: yyyy-mm-dd)
   const tipoEntrada = document.getElementById("tiposEntrada");
   const tipoEntradaValue = tipoEntrada.options[tipoEntrada.selectedIndex].text; // Nome da seleção
@@ -117,6 +115,7 @@ function addRow() {
   cell2.textContent = `${dataFormatada} - ${horaFormatada}`; // Usa a data formatada (dd/mm/aaaa)
   cell3.textContent = tipoEntradaValue;  // Exibe o nome do tipo de entrada
   cell4.textContent = descricao; // Usa o valor real do select
+  cell4.classList.add("truncate"); // Adiciona a classe truncate à descrição
   cell5.textContent = formaPagamentoValue; // Exibe o nome da forma de pagamento
   cell6.textContent = 'R$ ' + valor; // Usa o valor real do select
   cell7.innerHTML = `<input class="form-control" type="file" multiple>`;
