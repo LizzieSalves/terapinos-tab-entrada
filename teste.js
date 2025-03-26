@@ -178,8 +178,8 @@ function editRow(button) {
         // let dataFormatada = formataData(data);
 
         cell.innerHTML = `
-          <input type="date" value="${dataFormatada}" class="form-control">
-          <input type="time" value="${hora || ''}" class="form-control mt-1">
+          <input type="datetime-local" value="${dataFormatada}" class="form-control">
+        
         `;
       } else if (index === 2) { // Coluna de Tipo de Entrada
         const tipoEntrada = cell.textContent;
@@ -205,10 +205,13 @@ function editRow(button) {
         let valor = cell.textContent.replace(/[^\d,]/g, ''); // Remove caracteres extras (R$, espaços, etc.)
         cell.innerHTML = `
       <input type="text" value="${valor}" class="form-control" oninput="formatarValor(this)">
+  
     `;
+    
       } else if (index !== 0 && index !== 6 && index !== 7) { // Ignora ID, anexo e data/hora do envio
         const text = cell.textContent;
         cell.innerHTML = `<input type="text" value="${text}" class="form-control">`; // Transforma em input
+        
       }
     });
 
@@ -233,12 +236,14 @@ function saveRow(button) {
 
   cells.forEach((cell, index) => {
     if (index === 1) { // Coluna de Data/Hora
-      const inputDate = cell.querySelector("input[type='date']");
-      const inputTime = cell.querySelector("input[type='time']");
-      if (inputDate && inputTime) {
-        const data = inputDate.value;
-        const hora = inputTime.value || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        cell.textContent = `${data} - ${hora}`; // Formata a data e hora
+      const inputDateTime = cell.querySelector("input[type='datetime-local']");
+      if (inputDateTime) {
+        const originalValue = row.originalValues[index - 1]; // Valor original salvo antes da edição
+        const newValue = valor.value.trim(); // Remove espaços em branco
+
+        // Se o input estiver vazio, mantém o valor original
+        cell.textContent = newValue !== "" ? newValue : originalValue;
+       
         
       }
     } else if (index === 2 || index === 4) { // Coluna de Tipo de Entrada ou Forma de Pagamento
@@ -270,6 +275,7 @@ function saveRow(button) {
 
         // Se o input estiver vazio, mantém o valor original
         cell.textContent = newValue !== "" ? newValue : originalValue;
+        
       }
 
     }
