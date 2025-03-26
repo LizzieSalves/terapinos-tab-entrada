@@ -1,46 +1,49 @@
 // Função de validação e envio do formulário
 function validateForm() {
-  console.log("validateForm() foi chamado");
 
+  let valid = true;
 
-  let valid = false; // Assume que não há valores preenchidos corretamente
-  const inputs = document.querySelectorAll('.form-control[required], .form-select[required]');
-
-  // Verifica se pelo menos um campo tem um valor válido
-  inputs.forEach(input => {
-    if (input.tagName === 'SELECT') {
-      if (input.value.trim() !== '') {
-        valid = true;
-      }
+  // Verifica se os campos obrigatórios estão preenchidos
+  document.querySelectorAll('.form-control, .form-select').forEach(input => {
+    if (input.hasAttribute('required') && input.value.trim() === '') {
+      valid = false;
     } else {
-      if (/\d/.test(input.value.trim())) { // Pelo menos um número no input
-        valid = true;
-      }
+      input.classList.remove('is-invalid');
     }
   });
 
- 
+  // console.log("validateForm() foi chamado");
+
 
   if (valid) {
     addRow(); // Adiciona a nova linha na tabela
     clearForm(); // Limpa os campos do formulário
 
+    document.getElementById('entradaModal').addEventListener('shown.bs.modal', function () {
+      this.removeAttribute('aria-hidden');
+    });
+
+    document.activeElement.blur(); // Remove o foco do elemento ativo
     var modal = bootstrap.Modal.getInstance(document.getElementById('entradaModal'));
     if (modal) modal.hide();
-    
+
+
+    var modal = bootstrap.Modal.getInstance(document.getElementById('entradaModal'));
+    if (modal) modal.hide();
+
   }
 
-  
+
 }
 
-let form = document.getElementById("entradaForm");
-console.log(form); // Isso deve mostrar o formulário no console
+// let form = document.getElementById("entradaForm");
+// console.log(form); // Isso deve mostrar o formulário no console
 
-if (form) {
-    form.reset(); // Reseta o formulário se ele existir
-} else {
-    console.error("O formulário não foi encontrado!");
-}
+// if (form) {
+//   form.reset(); // Reseta o formulário se ele existir
+// } else {
+//   console.error("O formulário não foi encontrado!");
+// }
 
 
 // Função para limpar os campos do formulário
@@ -49,7 +52,7 @@ function clearForm() {
   document.querySelectorAll('.form-control, .form-select').forEach(input => input.classList.remove('is-invalid'));
 }
 
-     
+
 
 // Função para formatar valores monetários no estilo R$ X.XXX,XX
 function formatarValor(input) {
@@ -178,7 +181,7 @@ function editRow(button) {
             <option value="Outro" ${tipoEntrada === "Outro" ? "selected" : ""}>Outro</option>
           </select>
         `;
-      } else if (index === 4) { // Coluna de Forma de Pagamento
+      }else if (index === 4) { // Coluna de Forma de Pagamento
         const formaPagamento = cell.textContent;
         cell.innerHTML = `
           <select class="form-select">
@@ -188,9 +191,16 @@ function editRow(button) {
             <option value="Pix" ${formaPagamento === "Pix" ? "selected" : ""}>Pix</option>
           </select>
         `;
-      } else if (index !== 0 && index !== 6 && index !== 7) { // Ignora a coluna de ID, anexo e data/hora do envio
+      } else if (index === 5){
+        const valor = cell.textContent;
+        cell.innerHTML = `
+         <input type="text" value="${valor}" class="form-control" oninput="formatarValor(this)">
+        `;
+
+      }
+      else if (index !== 0 && index !== 6 && index !== 7) { // Ignora a coluna de ID, anexo e data/hora do envio
         const text = cell.textContent;
-        cell.innerHTML = `<input type="text" value="${text}" class="form-control">`; // Transforma em input
+        cell.innerHTML = `<input type="text" value="${text}" class="form-control" >`; // Transforma em input
       }
     });
     row.classList.add("editing");
@@ -230,7 +240,18 @@ function saveRow(button) {
         // Se o valor não for alterado, mantém o original
         cell.textContent = (selectedValue === "" || selectedValue === select.options[0].value) ? originalValue : selectedValue;
       }
-    } else if (index !== 0 && index !== 6 && index !== 7) { // Ignora a coluna de ID, anexo e data/hora do envio
+    } else if (index === 5){
+      const valor = cell.querySelector("input[type='text']");
+      if (valor){
+        const originalValue = row.originalValues[index - 1]; // Valor original salvo antes da edição
+        const newValue = valor.value.trim(); // Remove espaços em branco
+
+        // Se o input estiver vazio, mantém o valor original
+        cell.textContent = newValue !== "" ? newValue : originalValue;
+      }
+    }
+    
+    else if (index !== 0 && index !== 6 && index !== 7) { // Ignora a coluna de ID, anexo e data/hora do envio
       const input = cell.querySelector("input");
       if (input) {
         const originalValue = row.originalValues[index - 1]; // Valor original salvo antes da edição
@@ -239,6 +260,7 @@ function saveRow(button) {
         // Se o input estiver vazio, mantém o valor original
         cell.textContent = newValue !== "" ? newValue : originalValue;
       }
+      
     }
   });
 
