@@ -15,9 +15,9 @@
         <form id="formulario">
             <div class="mb-3">
                 <label for="valor" class="form-label">Valor</label>
-                <input type="text" class="form-control" id="valor" placeholder="Digite um valor" />
+                <input type="text" class="form-control" id="valor" placeholder="Digite um valor" oninput="formatarValor(this)/>
             </div>
-            <button type="submit" class="btn btn-primary">Salvar</button>
+            <button type=" submit" class="btn btn-primary">Salvar</button>
         </form>
     </div>
 
@@ -196,7 +196,9 @@
             document.querySelectorAll('.form-control, .form-select').forEach(input => {
                 if (input.hasAttribute('required') && input.value.trim() === '') {
                     valid = false;
-                } 
+                } else {
+                    input.classList.remove('is-invalid');
+                }
             });
 
             // Se o formulário for válido, salvar os dados e fechar o modal
@@ -226,20 +228,60 @@
             // Remove classes de erro
             document.querySelectorAll('.form-control, .form-select').forEach(input => input.classList.remove('is-invalid'));
         }
+        
 
-        // Função para formatar o valor monetário
-        function formatarValor(input) {
-            let valor = input.value.replace(/\D/g, ''); // Remove tudo que não for número
-            valor = valor.split('').reverse().join('');
+// Função para formatar valores monetários no estilo R$ X.XXX,XX
+function formatarValor(input) {
+  let valor = input.value.replace(/\D/g, ''); // Remove tudo que não for número
 
-            if (valor.length >= 2) {
-                valor = valor.slice(0, -2) + ',' + valor.slice(-2);
-            }
+  // Remove os zeros à esquerda, mas mantém pelo menos um zero para evitar campo vazio
+  valor = valor.replace(/^0+/, '') || '0';
 
-            valor = valor.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+  // Garante que pelo menos dois números estejam presentes para os centavos
+  while (valor.length < 3) {
+    valor = '0' + valor;
+  }
 
-            input.value = 'R$ ' + valor;
-        }
+  // Separa os últimos dois dígitos para os centavos
+  let centavos = valor.slice(-2);
+  let inteiros = valor.slice(0, -2);
+
+  // Formata os milhares com pontos
+  inteiros = inteiros.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+  input.value = `R$ ${inteiros},${centavos}`;
+}
+
+// Adiciona o evento de input ao campo de entrada
+document.addEventListener("DOMContentLoaded", function () {
+  const input = document.getElementById("numero");
+
+  input.addEventListener("input", function () {
+    formatarValor(input);
+  });
+});
+
+
+// Adiciona o evento de input ao campo de entrada
+document.addEventListener("DOMContentLoaded", function () {
+  const input = document.getElementById("numero");
+
+  input.addEventListener("input", function () {
+    formatarValor(input);
+  });
+});
+
+// Adiciona o evento de input ao campo de entrada
+document.addEventListener("DOMContentLoaded", function () {
+  const input = document.getElementById("numero");
+
+  input.addEventListener("input", function (event) {
+    let cursorPos = input.selectionStart; // Guarda a posição do cursor
+    formatarValor(input);
+    input.setSelectionRange(cursorPos, cursorPos); // Mantém o cursor na posição correta
+  });
+});
+
 
     </script>
 

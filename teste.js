@@ -49,34 +49,34 @@ function clearForm() {
   document.querySelectorAll('.form-control, .form-select').forEach(input => input.classList.remove('is-invalid'));
 }
 
-// Função para formatar valores monetários
-function formatarValor(input) {
-  let valor = input.value.replace(/\D/g, '');
-  valor = valor.split('').reverse().join('');
+     
 
-  if (valor.length >= 2) {
-    valor = valor.slice(0, -2) + ',' + valor.slice(-2);
+// Função para formatar valores monetários no estilo R$ X.XXX,XX
+function formatarValor(input) {
+  let valor = input.value.replace(/\D/g, ''); // Remove tudo que não for número
+
+  // Remove os zeros à esquerda, mas mantém pelo menos um zero para evitar campo vazio
+  valor = valor.replace(/^0+/, '') || '0';
+
+  // Garante que pelo menos dois números estejam presentes para os centavos
+  while (valor.length < 3) {
+    valor = '0' + valor;
   }
 
-  valor = valor.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-  input.value = 'R$ ' + valor;
+  // Separa os últimos dois dígitos para os centavos
+  let centavos = valor.slice(-2);
+  let inteiros = valor.slice(0, -2);
+
+  // Formata os milhares com pontos
+  inteiros = inteiros.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+  input.value = `R$ ${inteiros},${centavos}`;
 }
 
 
 // Função para adicionar uma nova linha
 function addRow() {
 
-  function addRow() {
-    console.log("Adicionando nova linha na tabela...");
-  }
-  
-  
-try {
-  // Código suspeito de erro
-} catch (e) {
-  console.error("Erro capturado:", e);
-  alert("Erro capturado! Veja o console.");
-}
 
 
   const dataInput = document.getElementById("dataHora").value; // Captura a data do formulário (formato: yyyy-mm-dd)
@@ -221,23 +221,25 @@ function saveRow(button) {
         const hora = inputTime.value || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         cell.textContent = `${data} - ${hora}`; // Formata a data e hora
       }
-    } else if (index === 2) { // Coluna de Tipo de Entrada
+    } else if (index === 2 || index === 4) { // Coluna de Tipo de Entrada ou Forma de Pagamento
       const select = cell.querySelector("select");
       if (select) {
-        cell.textContent = select.value; // Salva o valor selecionado
-      }
-    } else if (index === 4) { // Coluna de Forma de Pagamento
-      const select = cell.querySelector("select");
-      if (select) {
-        cell.textContent = select.value; // Salva o valor selecionado
+        const originalValue = row.originalValues[index - 1]; // Valor original salvo antes da edição
+        const selectedValue = select.value; // Valor atualmente selecionado
+
+        // Se o valor não for alterado, mantém o original
+        cell.textContent = (selectedValue === "" || selectedValue === select.options[0].value) ? originalValue : selectedValue;
       }
     } else if (index !== 0 && index !== 6 && index !== 7) { // Ignora a coluna de ID, anexo e data/hora do envio
       const input = cell.querySelector("input");
       if (input) {
-        cell.textContent = input.value; // Salva o valor do input
+        const originalValue = row.originalValues[index - 1]; // Valor original salvo antes da edição
+        const newValue = input.value.trim(); // Remove espaços em branco
+
+        // Se o input estiver vazio, mantém o valor original
+        cell.textContent = newValue !== "" ? newValue : originalValue;
       }
     }
-
   });
 
   // Volta aos botões de editar/excluir
@@ -252,6 +254,7 @@ function saveRow(button) {
   `;
   row.classList.remove("editing");
 }
+
 
 // Função para cancelar a edição
 function cancelEdit(button) {
