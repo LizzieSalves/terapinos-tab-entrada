@@ -144,7 +144,7 @@
 
         }
 
-        .container-btn{
+        .container-btn {
             gap: 50px;
         }
 
@@ -188,63 +188,59 @@
 
     <script>
 
-        // * ---------------------------- Função de modal de pagamento ----------------------//
-        // function payment($agendamentos.payments_id)
+        // Função de validação do formulário
+        function validateForm() {
+            let valid = true;
 
-        document.addEventListener("click", function (event) {
-            if (event.target.closest(".fa-dollar-sign")) {
-                var modal = new bootstrap.Modal(document.getElementById("entradaModal"));
-                modal.show();
-            }
-        });
+            // Verifica se os campos obrigatórios estão preenchidos
+            document.querySelectorAll('.form-control, .form-select').forEach(input => {
+                if (input.hasAttribute('required') && input.value.trim() === '') {
+                    valid = false;
+                } 
+            });
 
-        // Função para garantir que o campo valor aceite apenas números e vírgula ou ponto
-        document.getElementById('valor').addEventListener('input', function (event) {
-            let valor = event.target.value;
-            // Substitui todos os caracteres não numéricos (exceto vírgula e ponto)
-            event.target.value = valor.replace(/[^0-9.,]/g, '');
-        });
+            // Se o formulário for válido, salvar os dados e fechar o modal
+            if (valid) {
+                // Adiciona uma nova linha na tabela
+                addRow();
 
-        function formatarValor(input) {
-            let valor = input.value.replace(/\D/g, ''); // Remove tudo que não for número
+                // Exibe um alerta de confirmação
+                alert("✅ Formulário preenchido e salvo com sucesso!");
 
-            // Verifica a parte decimal (últimos 2 dígitos)
-            let parteDecimal = valor.slice(-2); // Os dois últimos dígitos serão a parte decimal
-            let parteInteira = valor.slice(0, -2); // O restante é a parte inteira
+                // Limpa os campos do formulário
+                clearForm();
 
-            // Adiciona pontos a cada 3 dígitos na parte inteira
-            let valorFormatadoInteiro = '';
-            let count = 0;
-            for (let i = parteInteira.length - 1; i >= 0; i--) {
-                valorFormatadoInteiro = parteInteira[i] + valorFormatadoInteiro;
-                count++;
-
-                // Adiciona ponto a cada 3 dígitos
-                if (count === 3 && i > 0) {
-                    valorFormatadoInteiro = '.' + valorFormatadoInteiro;
-                    count = 0;
-                }
+                // Fecha o modal
+                var modal = bootstrap.Modal.getInstance(document.getElementById('exampleModal'));
+                modal.hide();
             }
 
-            // Combina a parte inteira formatada com a parte decimal
-            let valorFormatado = valorFormatadoInteiro + ',' + parteDecimal;
-
-            // Adiciona o prefixo "R$"
-            input.value = 'R$ ' + valorFormatado;
+            return valid;
         }
 
-        // Adiciona formatação quando o campo perder o foco
-        document.getElementById('valor').addEventListener('blur', function () {
-            formatarValor(this);
-        });
+        // Função para limpar os campos do formulário
+        function clearForm() {
+            const form = document.getElementById('form');
+            form.reset();  // Limpa todos os campos
 
-        // Também formata o valor assim que o campo é preenchido, ao pressionar "Enter" ou ao submeter
-        document.getElementById('formulario').addEventListener('submit', function (event) {
-            event.preventDefault();  // Evita o envio do formulário
-            const valorInput = document.getElementById('valor');
-            formatarValor(valorInput);
-            alert('Valor formatado: ' + valorInput.value);
-        });
+            // Remove classes de erro
+            document.querySelectorAll('.form-control, .form-select').forEach(input => input.classList.remove('is-invalid'));
+        }
+
+        // Função para formatar o valor monetário
+        function formatarValor(input) {
+            let valor = input.value.replace(/\D/g, ''); // Remove tudo que não for número
+            valor = valor.split('').reverse().join('');
+
+            if (valor.length >= 2) {
+                valor = valor.slice(0, -2) + ',' + valor.slice(-2);
+            }
+
+            valor = valor.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+
+            input.value = 'R$ ' + valor;
+        }
+
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
