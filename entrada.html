@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="/sidebar-terapinos/styles.css">
   <link rel="shortcut icon" href="/sidebar-terapinos/src/icon.png" type="image/x-icon">
   <link rel="stylesheet" href="/entrada.css">
- 
+
 </head>
 
 <body>
@@ -69,68 +69,70 @@
       <div class="container mt-5">
         <section id="acoes">
           <!-- Btn Modal Novo -->
-          <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">Novo</button>
+          <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#entradaModal">Novo</button>
 
-          <!-- Modal -->
-          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+          <!-- Modal de pagamento -->
+          <div class="modal fade" id="entradaModal" tabindex="-1" aria-labelledby="entradaModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
               <div class="modal-content">
                 <div class="modal-header">
                   <div id="modal-topo">
-                    <h1 class="modal-title" id="exampleModalLabel">Entrada</h1>
-                    <hr>
+                    <h1 class="modal-title text-center w-100" id="entradaModalLabel">Entrada</h5>
+                      <!-- <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button> -->
+                      <hr>
                   </div>
                 </div>
                 <div class="modal-body modal-novo">
-                  <form action="" id="form">
-                    <div>
-                      <label for="data" class="form-label">Data</label>
-                      <input type="date" class="form-control" id="data" placeholder="Dia/Mês/Ano">
-                      <span class="span-required" id="data-error">Campo obrigatório!</span>
+                  <form id="entradaForm">
+                    <div class="mb-3">
+                      <label for="dataHora" class="form-label">Data/hora</label>
+                      <input type="datetime-local" class="form-control" id="dataHora" required>
                     </div>
-                    <div>
-                      <label for="tipoEntrada" class="form-label">Tipo de Entrada</label>
-                      <select class="form-select" id="tipoEntrada">
-                        <option selected>Selecione o tipo de pagamento</option>
-                        <option value="1">Consulta</option>
-                        <option value="2">Débito</option>
-                        <option value="3">Crédito</option>
-                        <option value="4">Pix</option>
+                    <div class="mb-3">
+                      <label for="tiposEntrada" class="form-label">Tipos de Entrada</label>
+                      <select class="form-select" id="tiposEntrada" required>
+                        <option value="" disabled selected>Selecione</option>
+                        <option value="salario">Salário</option>
+                        <option value="freelance">Freelance</option>
+                        <option value="investimentos">Investimentos</option>
+                        <option value="outros">Outros</option>
                       </select>
-                      <span class="span-required" id="tipoEntrada-error">Campo obrigatório!</span>
                     </div>
-                    <div>
+                    <div class="mb-3">
                       <label for="descricao" class="form-label">Descrição</label>
-                      <input type="text" class="form-control" id="descricao" placeholder="">
-                      <span class="span-required" id="descricao-error">Campo obrigatório!</span>
+                      <input type="text" class="form-control" placeholder="Descrição..." id="descricao" required>
                     </div>
-                    <div>
+                    <div class="mb-3">
                       <label for="formaPagamento" class="form-label">Forma de pagamento</label>
-                      <select class="form-select" id="formaPagamento">
-                        <option selected>Selecione o tipo de pagamento</option>
-                        <option value="1">Consulta</option>
-                        <option value="2">Revisão</option>
-                        <option value="3">Retorno</option>
-                        <option value="4">Outro</option>
+                      <select class="form-select" id="formaPagamento" required>
+                        <option value="" disabled selected>Selecione</option>
+                        <option value="dinheiro">Dinheiro</option>
+                        <option value="cartao">Cartão</option>
+                        <option value="pix">PIX</option>
+                        <option value="boleto">Boleto</option>
                       </select>
-                      <span class="span-required" id="formaPagamento-error">Campo obrigatório!</span>
                     </div>
-                    <div>
+                    <div class="mb-3">
                       <label for="valor" class="form-label">Valor</label>
-                      <input type="text" class="form-control" id="valor" placeholder="">
-                      <span class="span-required" id="valor-error">Campo obrigatório!</span>
+                      <input type="text" class="form-control" id="valor" placeholder="" oninput="formatarValor(this)"
+                        required>
                     </div>
-
                     <div class="mb-3">
                       <label for="anexo" class="form-label">Anexo</label>
-                      <input class="form-control" type="file" id="anexo" multiple>
+                      <input type="file" class="form-control" id="anexo">
+                    </div>
+                    <div>
+                      <input type="number" hidden class="form-control" id="payment_id" name="proposta-id" value="">
+                    </div>
+                    <div class="d-flex justify-content-center container-btn">
+                      <button type="button" class="btn btn-danger" id="btn-cancelar"
+                        data-bs-dismiss="modal">Cancelar</button>
+                      <button type="submit" class="btn" id="btn-salvar" onclick="validateForm()"
+                        onclick="addRow()">Salvar</button>
                     </div>
                   </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn" id="btn-salvar" onclick="validateForm()" onclick="addRow()">Salvar</button>
-                  <button type="button" class="btn" data-bs-dismiss="modal" id="btn-cancelar">Cancelar</button>
                 </div>
               </div>
             </div>

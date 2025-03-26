@@ -1,161 +1,253 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabela Dinâmica com HTML, CSS e JS</title>
+    <title>Formatação de Valor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <h2>Formatação de Valor</h2>
+        <form id="formulario">
+            <div class="mb-3">
+                <label for="valor" class="form-label">Valor</label>
+                <input type="text" class="form-control" id="valor" placeholder="Digite um valor" />
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </form>
+    </div>
+
+
+
+    <div class="container mt-5">
+        <section id="acoes">
+            <!-- Btn Modal Novo -->
+            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#entradaModal">Novo</button>
+
+            <!-- Modal de pagamento -->
+            <div class="modal fade" id="entradaModal" tabindex="-1" aria-labelledby="entradaModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div id="modal-topo">
+                                <h1 class="modal-title text-center w-100" id="entradaModalLabel">Entrada</h5>
+                                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button> -->
+                                    <hr>
+                            </div>
+                        </div>
+                        <div class="modal-body modal-novo">
+                            <form id="entradaForm">
+                                <div class="mb-3">
+                                    <label for="dataHora" class="form-label">Data/hora</label>
+                                    <input type="datetime-local" class="form-control" id="dataHora" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="tiposEntrada" class="form-label">Tipos de Entrada</label>
+                                    <select class="form-select" id="tiposEntrada" required>
+                                        <option value="" disabled selected>Selecione</option>
+                                        <option value="salario">Salário</option>
+                                        <option value="freelance">Freelance</option>
+                                        <option value="investimentos">Investimentos</option>
+                                        <option value="outros">Outros</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="descricao" class="form-label">Descrição</label>
+                                    <input type="text" class="form-control" placeholder="Descrição..." id="descricao"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="formaPagamento" class="form-label">Forma de pagamento</label>
+                                    <select class="form-select" id="formaPagamento" required>
+                                        <option value="" disabled selected>Selecione</option>
+                                        <option value="dinheiro">Dinheiro</option>
+                                        <option value="cartao">Cartão</option>
+                                        <option value="pix">PIX</option>
+                                        <option value="boleto">Boleto</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="valor" class="form-label">Valor</label>
+                                    <input type="text" class="form-control" id="valor" placeholder=""
+                                        oninput="formatarValor(this)" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="anexo" class="form-label">Anexo</label>
+                                    <input type="file" class="form-control" id="anexo">
+                                </div>
+                                <div>
+                                    <input type="number" hidden class="form-control" id="payment_id" name="proposta-id"
+                                        value="">
+                                </div>
+                                <div class="d-flex justify-content-center container-btn">
+                                    <button type="button" class="btn btn-danger" id="btn-cancelar"
+                                        data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn" id="btn-salvar" onclick="validateForm()"
+                                        onclick="addRow()">Salvar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
     <style>
-        /* Estilos da tabela */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+        /*^ --------------------- Modal Novo -------------------- */
+
+        .modal-header hr {
+            background-color: #006078;
+            width: auto;
+            height: 3px;
+            border: 0px;
+            margin: 0px;
+
         }
-        table td, table th {
-            border: 1px solid #ddd;
-            padding: 8px;
+
+        .modal-content {
+            font-weight: 500;
+
         }
-        table th {
-            background-color: #f4f4f4;
-            text-align: left;
+
+        .modal-header {
+            justify-content: center !important;
         }
-        table td {
-            max-width: 150px; /* Define um tamanho máximo para a célula */
-            white-space: nowrap; /* Impede que o texto quebre em várias linhas */
-            overflow: hidden; /* Esconde o texto que ultrapassa o tamanho da célula */
-            text-overflow: ellipsis; /* Adiciona "..." ao final do texto truncado */
+
+        .modal-header h1 {
+            padding: 0px 30px 0px 30px;
         }
-        .acoes button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            margin: 0 5px;
+
+        .modal-header .btn-close {
+            margin-left: 0px;
+
+        }
+
+        .modal-novo {
+            overflow-x: auto;
+            /* ou "scroll" */
+            white-space: nowrap;
+            /* Impede que o conteúdo quebre em várias linhas */
+
+        }
+
+        .modal-novo div {
+            margin-bottom: 20px;
+            padding-left: 20px;
+            padding-right: 20px;
+
+        }
+
+        .container-btn{
+            gap: 50px;
+        }
+
+
+        #btn-salvar {
+            background-color: #006078;
+            width: 150px;
+            color: #ffffff;
+        }
+
+        #btn-salvar:hover {
+            background-color: transparent;
+            border-color: #006078;
+            color: #006078;
+        }
+
+
+        #btn-cancelar {
+            width: 150px;
+            background-color: #FF0000;
+            gap: 50px;
+        }
+
+        #btn-cancelar:hover {
+            background-color: transparent;
+            border-color: #FF0000;
+            color: #FF0000;
+        }
+
+
+        .modal-footer {
+            justify-content: center;
+            padding-top: 20px;
+            padding-bottom: 30px;
+            gap: 30px;
+
+        }
+
         }
     </style>
-</head>
-<body>
-    <h1>Tabela Dinâmica</h1>
-    <table id="tabela-dados">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Data</th>
-                <th>Tipo de Entrada</th>
-                <th>Descrição</th>
-                <th>Forma de Pagamento</th>
-                <th>Valor</th>
-                <th>Anexo</th>
-                <th>Data/Hora Envio</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Os dados serão inseridos aqui dinamicamente -->
-        </tbody>
-    </table>
 
     <script>
-        // Dados simulados (substitua por dados reais se necessário)
-        const dados = [
-            {
-                id: 1,
-                data: '2023-10-01',
-                tipo_entrada: 'Consulta',
-                descricao: 'Descrição do serviço prestado ao cliente X.',
-                forma_pagamento: 'Dinheiro',
-                valor: 100.50,
-                anexo: 'arquivo.pdf',
-                data_hora_envio: '2023-10-01T10:00:00'
-            },
-            {
-                id: 2,
-                data: '2023-10-02',
-                tipo_entrada: 'Revisão',
-                descricao: 'Revisão completa do veículo Y.',
-                forma_pagamento: 'Cartão de Crédito',
-                valor: 250.00,
-                anexo: '',
-                data_hora_envio: '2023-10-02T14:30:00'
-            },
-            {
-                id: 3,
-                data: '2023-10-03',
-                tipo_entrada: 'Retorno',
-                descricao: 'Retorno para verificação do serviço realizado.',
-                forma_pagamento: 'Pix',
-                valor: 0.00,
-                anexo: 'foto.jpg',
-                data_hora_envio: '2023-10-03T09:15:00'
+
+        // * ---------------------------- Função de modal de pagamento ----------------------//
+        // function payment($agendamentos.payments_id)
+
+        document.addEventListener("click", function (event) {
+            if (event.target.closest(".fa-dollar-sign")) {
+                var modal = new bootstrap.Modal(document.getElementById("entradaModal"));
+                modal.show();
             }
-        ];
+        });
 
-        // Função para formatar data (dd/mm/aaaa)
-        function formatarData(data) {
-            const [ano, mes, dia] = data.split('-');
-            return `${dia}/${mes}/${ano}`;
-        }
+        // Função para garantir que o campo valor aceite apenas números e vírgula ou ponto
+        document.getElementById('valor').addEventListener('input', function (event) {
+            let valor = event.target.value;
+            // Substitui todos os caracteres não numéricos (exceto vírgula e ponto)
+            event.target.value = valor.replace(/[^0-9.,]/g, '');
+        });
 
-        // Função para formatar data e hora (dd/mm/aaaa hh:mm)
-        function formatarDataHora(dataHora) {
-            const data = new Date(dataHora);
-            const dia = String(data.getDate()).padStart(2, '0');
-            const mes = String(data.getMonth() + 1).padStart(2, '0');
-            const ano = data.getFullYear();
-            const hora = String(data.getHours()).padStart(2, '0');
-            const minutos = String(data.getMinutes()).padStart(2, '0');
-            return `${dia}/${mes}/${ano} ${hora}:${minutos}`;
-        }
+        function formatarValor(input) {
+            let valor = input.value.replace(/\D/g, ''); // Remove tudo que não for número
 
-        // Função para preencher a tabela com os dados
-        function preencherTabela() {
-            const tbody = document.querySelector('#tabela-dados tbody');
-            tbody.innerHTML = ''; // Limpa o conteúdo atual
+            // Verifica a parte decimal (últimos 2 dígitos)
+            let parteDecimal = valor.slice(-2); // Os dois últimos dígitos serão a parte decimal
+            let parteInteira = valor.slice(0, -2); // O restante é a parte inteira
 
-            dados.forEach(item => {
-                const row = `
-                    <tr>
-                        <td>${item.id}</td>
-                        <td>${formatarData(item.data)}</td>
-                        <td>${item.tipo_entrada}</td>
-                        <td>${item.descricao}</td>
-                        <td>${item.forma_pagamento}</td>
-                        <td>R$ ${item.valor.toFixed(2)}</td>
-                        <td>${item.anexo || 'Nenhum'}</td>
-                        <td>${formatarDataHora(item.data_hora_envio)}</td>
-                        <td class="acoes">
-                            <button onclick="editarLinha(${item.id})">
-                                <i class="bi bi-pen-fill text-warning">✏️</i>
-                            </button>
-                            <button onclick="excluirLinha(${item.id})">
-                                <i class="bi bi-trash-fill text-danger">🗑️</i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-                tbody.insertAdjacentHTML('beforeend', row);
-            });
-        }
+            // Adiciona pontos a cada 3 dígitos na parte inteira
+            let valorFormatadoInteiro = '';
+            let count = 0;
+            for (let i = parteInteira.length - 1; i >= 0; i--) {
+                valorFormatadoInteiro = parteInteira[i] + valorFormatadoInteiro;
+                count++;
 
-        // Função para editar uma linha (simulação)
-        function editarLinha(id) {
-            alert(`Editar linha com ID ${id}`);
-            // Aqui você pode abrir um modal ou formulário para editar os dados
-        }
-
-        // Função para excluir uma linha (simulação)
-        function excluirLinha(id) {
-            const confirmacao = confirm(`Tem certeza que deseja excluir a linha com ID ${id}?`);
-            if (confirmacao) {
-                const index = dados.findIndex(item => item.id === id);
-                if (index !== -1) {
-                    dados.splice(index, 1); // Remove o item do array
-                    preencherTabela(); // Atualiza a tabela
+                // Adiciona ponto a cada 3 dígitos
+                if (count === 3 && i > 0) {
+                    valorFormatadoInteiro = '.' + valorFormatadoInteiro;
+                    count = 0;
                 }
             }
+
+            // Combina a parte inteira formatada com a parte decimal
+            let valorFormatado = valorFormatadoInteiro + ',' + parteDecimal;
+
+            // Adiciona o prefixo "R$"
+            input.value = 'R$ ' + valorFormatado;
         }
 
-        // Preenche a tabela ao carregar a página
-        window.onload = preencherTabela;
+        // Adiciona formatação quando o campo perder o foco
+        document.getElementById('valor').addEventListener('blur', function () {
+            formatarValor(this);
+        });
+
+        // Também formata o valor assim que o campo é preenchido, ao pressionar "Enter" ou ao submeter
+        document.getElementById('formulario').addEventListener('submit', function (event) {
+            event.preventDefault();  // Evita o envio do formulário
+            const valorInput = document.getElementById('valor');
+            formatarValor(valorInput);
+            alert('Valor formatado: ' + valorInput.value);
+        });
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

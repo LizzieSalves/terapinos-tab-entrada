@@ -83,7 +83,7 @@
     box-shadow: var(--bs-btn-focus-box-shadow);
 }
 
-/*^ --------------------- Modal Novo -------------------- */
+/ /*^ --------------------- Modal Novo -------------------- */
 
 .modal-header hr {
     background-color: #006078;
@@ -104,7 +104,7 @@
 }
 
 .modal-header h1 {
-    margin: 0px 30px 0px 30px;
+    padding: 0px 30px 0px 30px;
 }
 
 .modal-header .btn-close {
@@ -127,9 +127,15 @@
 
 }
 
+.container-btn{
+    gap: 50px;
+}
+
 
 #btn-salvar {
     background-color: #006078;
+    width: 150px;
+    color: #ffffff;
 }
 
 #btn-salvar:hover {
@@ -140,7 +146,9 @@
 
 
 #btn-cancelar {
+    width: 150px;
     background-color: #FF0000;
+    gap: 50px;
 }
 
 #btn-cancelar:hover {
@@ -158,16 +166,6 @@
 
 }
 
-/* validação */
-.span-required {
-    color: red;
-    font-size: 12px;
-    display: none; /* Inicia oculto */
-}
-
-.is-invalid {
-    border-color: red;
-}
 
 
 /*^ --------------- Tabela ---------------- */

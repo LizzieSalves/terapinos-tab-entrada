@@ -81,44 +81,21 @@ function clearForm() {
     document.querySelectorAll('.span-required').forEach(span => span.style.display = 'none');
 }
 
-// Função para garantir que o campo valor aceite apenas números
-document.getElementById('valor').addEventListener('input', function (event) {
-    let valor = event.target.value;
-    // Substitui todos os caracteres não numéricos
-    event.target.value = valor.replace(/[^0-9.,]/g, '');
-});
 
-// Função para formatar o valor como moeda (R$ 1.000,00) enquanto o usuário digita
-document.getElementById('valor').addEventListener('input', function (event) {
-    let valor = event.target.value;
+function formatarValor(input) {
+  let valor = input.value.replace(/\D/g, ''); // Remove tudo que não for número
+  valor = valor.split('').reverse().join(''); // Inverte a ordem dos números
 
-    // Remover tudo o que não for número ou vírgula
-    valor = valor.replace(/[^\d,]/g, '');  // Remove caracteres não numéricos, mas mantém a vírgula
+  if (valor.length >= 2) {
+      valor = valor.slice(0, -2) + ',' + valor.slice(-2); // Adiciona a vírgula antes dos dois últimos
+  }
 
-    // Se houver algum valor, começa a formatação
-    if (valor) {
-        // Primeiro, separa a parte inteira da parte decimal (caso exista)
-        let [inteiro, decimal] = valor.split(',');
+  valor = valor.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'); // Adiciona ponto a cada três números antes da vírgula
+  
+  input.value = 'R$ ' + valor; // Adiciona "R$ " no início
+}
 
-        // Formatar a parte inteira com separador de milhar (ponto)
-        inteiro = inteiro.replace(/\B(?=(\d{3})+(?!\d))/g, '.');  // Adiciona ponto como separador de milhar
 
-        // Limitar a parte decimal a 2 casas decimais
-        if (decimal) {
-            decimal = decimal.substring(0, 2);  // Limita a parte decimal a 2 dígitos
-        }
-
-        // Combina as partes inteira e decimal
-        if (decimal) {
-            valor = `${inteiro},${decimal}`;
-        } else {
-            valor = inteiro; // Se não tiver parte decimal, apenas a parte inteira
-        }
-    }
-
-    // Coloca o símbolo "R$" na frente do valor
-    event.target.value = 'R$ ' + valor;
-});
 
 // Função para adicionar uma nova linha
 function addRow() {
