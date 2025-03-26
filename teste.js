@@ -89,12 +89,12 @@ function addRow() {
   const valor = document.getElementById("valor").value;
   const anexo = document.getElementById("anexo").value;
 
-  // Formatar a data para o formato dd/mm/aaaa (apenas para exibição na tabela)
+  // Formatar a data para o formato dd/mm/aaaa
   const dataFormatada = formatarData(dataInput);
 
   // Captura a data e hora atual para o envio
   const dataHoraEnvio = new Date();
-  const horaFormatada = dataHoraEnvio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); // Formato: hh:mm
+  const horaFormatada = dataHoraEnvio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
   // Criar uma nova linha
   const table = document.querySelector("#tabela-container table tbody");
@@ -165,43 +165,53 @@ function editRow(button) {
     // Entra no modo de edição
     cells.forEach((cell, index) => {
       if (index === 1) { // Coluna de Data/Hora
-        const [data, hora] = cell.textContent.split(" - "); // Separa data e hora
+        const conteudoDataHora = cell.textContent.trim();
+
+        // Separar data e hora corretamente
+        let [data, hora] = conteudoDataHora.split(" - ");
+
+        // Converter data para o formato yyyy-MM-dd esperado pelo input[type="date"]
+        let partesData = data.split("/");
+        let dataFormatada = `${partesData[2]}-${partesData[1]}-${partesData[0]}`; // yyyy-MM-dd
+
+        //     // / Converter data para o formato yyyy-MM-dd esperado pelo input[type="date"]
+        // let dataFormatada = formataData(data);
+
         cell.innerHTML = `
-          <input type="date" value="${data}" class="form-control">
+          <input type="date" value="${dataFormatada}" class="form-control">
           <input type="time" value="${hora || ''}" class="form-control mt-1">
         `;
       } else if (index === 2) { // Coluna de Tipo de Entrada
         const tipoEntrada = cell.textContent;
         cell.innerHTML = `
-          <select class="form-select">
-            <option value="Consulta" ${tipoEntrada === "Consulta" ? "selected" : ""}>Consulta</option>
-            <option value="Revisão" ${tipoEntrada === "Revisão" ? "selected" : ""}>Revisão</option>
-            <option value="Retorno" ${tipoEntrada === "Retorno" ? "selected" : ""}>Retorno</option>
-            <option value="Outro" ${tipoEntrada === "Outro" ? "selected" : ""}>Outro</option>
-          </select>
-        `;
-      }else if (index === 4) { // Coluna de Forma de Pagamento
+      <select class="form-select">
+        <option value="Consulta" ${tipoEntrada === "Consulta" ? "selected" : ""}>Consulta</option>
+        <option value="Revisão" ${tipoEntrada === "Revisão" ? "selected" : ""}>Revisão</option>
+        <option value="Retorno" ${tipoEntrada === "Retorno" ? "selected" : ""}>Retorno</option>
+        <option value="Outro" ${tipoEntrada === "Outro" ? "selected" : ""}>Outro</option>
+      </select>
+    `;
+      } else if (index === 4) { // Coluna de Forma de Pagamento
         const formaPagamento = cell.textContent;
         cell.innerHTML = `
-          <select class="form-select">
-            <option value="Dinheiro" ${formaPagamento === "Dinheiro" ? "selected" : ""}>Dinheiro</option>
-            <option value="Débito" ${formaPagamento === "Débito" ? "selected" : ""}>Débito</option>
-            <option value="Crédito" ${formaPagamento === "Crédito" ? "selected" : ""}>Crédito</option>
-            <option value="Pix" ${formaPagamento === "Pix" ? "selected" : ""}>Pix</option>
-          </select>
-        `;
-      } else if (index === 5){
-        const valor = cell.textContent;
+      <select class="form-select">
+        <option value="Dinheiro" ${formaPagamento === "Dinheiro" ? "selected" : ""}>Dinheiro</option>
+        <option value="Débito" ${formaPagamento === "Débito" ? "selected" : ""}>Débito</option>
+        <option value="Crédito" ${formaPagamento === "Crédito" ? "selected" : ""}>Crédito</option>
+        <option value="Pix" ${formaPagamento === "Pix" ? "selected" : ""}>Pix</option>
+      </select>
+    `;
+      } else if (index === 5) { // Coluna de Valor (com formatação)
+        let valor = cell.textContent.replace(/[^\d,]/g, ''); // Remove caracteres extras (R$, espaços, etc.)
         cell.innerHTML = `
-         <input type="text" value="${valor}" class="form-control" oninput="formatarValor(this)">
-        `;
-
-      }
-      else if (index !== 0 && index !== 6 && index !== 7) { // Ignora a coluna de ID, anexo e data/hora do envio
+      <input type="text" value="${valor}" class="form-control" oninput="formatarValor(this)">
+    `;
+      } else if (index !== 0 && index !== 6 && index !== 7) { // Ignora ID, anexo e data/hora do envio
         const text = cell.textContent;
-        cell.innerHTML = `<input type="text" value="${text}" class="form-control" >`; // Transforma em input
+        cell.innerHTML = `<input type="text" value="${text}" class="form-control">`; // Transforma em input
       }
     });
+
     row.classList.add("editing");
     // Substitui os botões de editar/excluir por salvar/cancelar
     const actionsCell = row.querySelector("td:last-child");
@@ -229,6 +239,7 @@ function saveRow(button) {
         const data = inputDate.value;
         const hora = inputTime.value || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         cell.textContent = `${data} - ${hora}`; // Formata a data e hora
+        
       }
     } else if (index === 2 || index === 4) { // Coluna de Tipo de Entrada ou Forma de Pagamento
       const select = cell.querySelector("select");
@@ -239,17 +250,18 @@ function saveRow(button) {
         // Se o valor não for alterado, mantém o original
         cell.textContent = (selectedValue === "" || selectedValue === select.options[0].value) ? originalValue : selectedValue;
       }
-    } else if (index === 5){
+    } else if (index === 5) {
       const valor = cell.querySelector("input[type='text']");
-      if (valor){
+      if (valor) {
         const originalValue = row.originalValues[index - 1]; // Valor original salvo antes da edição
         const newValue = valor.value.trim(); // Remove espaços em branco
 
         // Se o input estiver vazio, mantém o valor original
         cell.textContent = newValue !== "" ? newValue : originalValue;
+        
       }
     }
-    
+
     else if (index !== 0 && index !== 6 && index !== 7) { // Ignora a coluna de ID, anexo e data/hora do envio
       const input = cell.querySelector("input");
       if (input) {
@@ -259,7 +271,7 @@ function saveRow(button) {
         // Se o input estiver vazio, mantém o valor original
         cell.textContent = newValue !== "" ? newValue : originalValue;
       }
-      
+
     }
   });
 
